@@ -11,7 +11,7 @@
 import traceback
 import httplib
 import urllib
-import simplejson as json
+import json
 import ssl
 import time
 import datetime
