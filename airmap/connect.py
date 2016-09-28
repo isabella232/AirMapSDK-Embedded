@@ -65,12 +65,13 @@ class Connect:
 			pass
 
 		try:
-			print socket.gethostname()
+			#print socket.gethostname()
 			thisIP = "IP Address: " + socket.gethostbyname(socket.gethostname())
-			Globals.strPrint (self.thisGlobals, thisIP)
+			#Globals.strPrint (self.thisGlobals, thisIP)
 			
 		except Exception,e:
-			Globals.strPrint (self.thisGlobals, "No IP Found...")
+			#Globals.strPrint (self.thisGlobals, "No IP Found...")
+			pass
 
 	def set_Timeout(self, time_out):
 		"""Set https request timeout time
@@ -96,14 +97,15 @@ class Connect:
 		except:
 			return False
 	
-	def get_CIDID(self):
+	def get_boardID(self):
 		"""Retrieve CID from mmcblk0
 
     		:param: None
     		:returns: CID otherwise False
     		"""
 		try:
-			Globals.thisCID = subprocess.check_output('cat /sys/block/mmcblk0/device/cid', shell=True)
+			Globals.thisCID = subprocess.check_output('./airprint', shell=True)
+			print "boardID|" + Globals.thisCID
 			return Globals.thisCID
 		except:
 			traceback.print_exc()

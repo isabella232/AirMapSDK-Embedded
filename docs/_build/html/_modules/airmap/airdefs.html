@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>airmap.airdefs &mdash; Airmap V2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'V2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Airmap V2 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Airmap V2 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for airmap.airdefs</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  airdefs</span>
+<span class="sd">  AirMapSDK</span>
+
+<span class="sd">  Created by AirMap Team on 6/28/16.</span>
+<span class="sd">  Copyright (c) 2016 AirMap, Inc. All rights reserved.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Startup"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Startup">[docs]</a><span class="k">class</span> <span class="nc">Startup</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Startup configuration</span>
+
+<span class="sd">	:notes:</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Startup.Drone"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Startup.Drone">[docs]</a>	<span class="k">class</span> <span class="nc">Drone</span><span class="p">:</span>
+		<span class="sd">&quot;&quot;&quot;Drone information (ID, Location, Status)</span>
+
+<span class="sd">    		&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Startup.Drone.enum"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Startup.Drone.enum">[docs]</a>		<span class="k">def</span> <span class="nf">enum</span><span class="p">(</span><span class="o">*</span><span class="n">sequential</span><span class="p">,</span> <span class="o">**</span><span class="n">named</span><span class="p">):</span>
+    			<span class="n">enums</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sequential</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequential</span><span class="p">))),</span> <span class="o">**</span><span class="n">named</span><span class="p">)</span>
+    			<span class="n">reverse</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">enums</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+    			<span class="n">enums</span><span class="p">[</span><span class="s">&#39;reverse_mapping&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reverse</span>
+			<span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="s">&#39;Enum&#39;</span><span class="p">,</span> <span class="p">(),</span> <span class="n">enums</span><span class="p">)</span>
+</div>
+		<span class="n">State</span> <span class="o">=</span> <span class="n">enum</span><span class="p">(</span><span class="n">connect</span><span class="o">=</span><span class="s">&#39;connect&#39;</span><span class="p">,</span> <span class="n">prearm</span><span class="o">=</span><span class="s">&#39;prearm&#39;</span><span class="p">,</span> <span class="n">gpslock</span><span class="o">=</span><span class="s">&#39;gpslock&#39;</span><span class="p">,</span> <span class="n">airstatus</span><span class="o">=</span><span class="s">&#39;airstatus&#39;</span><span class="p">,</span> <span class="n">arm</span><span class="o">=</span><span class="s">&#39;arm&#39;</span><span class="p">,</span> <span class="n">takeoff</span><span class="o">=</span><span class="s">&#39;takeoff&#39;</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="Advisory"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Advisory">[docs]</a><span class="k">class</span> <span class="nc">Advisory</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Advisoy information (Pre-Flight, In-Flight)</span>
+
+<span class="sd">	:notes: Advisory status color list</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Advisory.Color"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Advisory.Color">[docs]</a>	<span class="k">class</span> <span class="nc">Color</span><span class="p">:</span>
+		<span class="sd">&quot;&quot;&quot;Flight status color code</span>
+
+<span class="sd">    		&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Advisory.Color.enum"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Advisory.Color.enum">[docs]</a>		<span class="k">def</span> <span class="nf">enum</span><span class="p">(</span><span class="o">*</span><span class="n">sequential</span><span class="p">,</span> <span class="o">**</span><span class="n">named</span><span class="p">):</span>
+    			<span class="n">enums</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sequential</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequential</span><span class="p">))),</span> <span class="o">**</span><span class="n">named</span><span class="p">)</span>
+    			<span class="n">reverse</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">enums</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+    			<span class="n">enums</span><span class="p">[</span><span class="s">&#39;reverse_mapping&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reverse</span>
+			<span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="s">&#39;Enum&#39;</span><span class="p">,</span> <span class="p">(),</span> <span class="n">enums</span><span class="p">)</span>
+</div>
+		<span class="n">Colors</span> <span class="o">=</span> <span class="n">enum</span><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="n">green</span><span class="o">=</span><span class="s">&#39;green&#39;</span><span class="p">,</span> <span class="n">yellow</span><span class="o">=</span><span class="s">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">red</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+		<span class="sd">&quot;&quot;&quot;Color code</span>
+<span class="sd">		</span>
+<span class="sd">		:param gray: Disbabled</span>
+<span class="sd">		:param green: Go</span>
+<span class="sd">		:param yellow: Advise</span>
+<span class="sd">		:param red: NoFly</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+</div></div>
+<div class="viewcode-block" id="Globals"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Globals">[docs]</a><span class="k">class</span> <span class="nc">Globals</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Global settings</span>
+
+<span class="sd">	:notes: Session parametes address, port, timeot, api key, token, pilot id, flight id</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+
+	<span class="n">httpsAddr</span> <span class="o">=</span> <span class="s">&#39;api.airmap.io&#39;</span>
+	<span class="n">keyAddr</span> <span class="o">=</span> <span class="s">&#39;sso.airmap.io&#39;</span>
+	<span class="n">telemetryAddr</span> <span class="o">=</span> <span class="s">&#39;api-aero-telemetry.airmap.com&#39;</span>
+	<span class="n">httpsPort</span> <span class="o">=</span> <span class="mi">443</span>
+	<span class="n">httpPort</span> <span class="o">=</span> <span class="mi">80</span>
+	<span class="n">timeOut</span> <span class="o">=</span> <span class="mi">18</span>
+	<span class="n">AirConnected</span> <span class="o">=</span> <span class="bp">False</span>
+	<span class="n">thisCID</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">xapikey</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">myToken</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">pilot_id</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">myFlightID</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">pilotIDValid</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="Globals.strPrint"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Globals.strPrint">[docs]</a>	<span class="k">def</span> <span class="nf">strPrint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Information send to console</span>
+
+<span class="sd">    		:param data: information to send to console</span>
+<span class="sd">    		:returns: None</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+    		<span class="k">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">&quot;</span>
+</div>
+<div class="viewcode-block" id="Globals.dbgPrint"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Globals.dbgPrint">[docs]</a>	<span class="k">def</span> <span class="nf">dbgPrint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Debug send to console</span>
+
+<span class="sd">		:param data: Debug or information to send to console</span>
+<span class="sd">        	:returns: None</span>
+<span class="sd">        	&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+			<span class="k">print</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\r</span><span class="s">&quot;</span>
+</div></div>
+<div class="viewcode-block" id="Properties"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Properties">[docs]</a><span class="k">class</span> <span class="nc">Properties</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;Name to Value Keypairs</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">prop_value</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Properties key pair</span>
+
+<span class="sd">    		:param prop_name: Pair data name</span>
+<span class="sd">		:param prop_value: Pair data value</span>
+<span class="sd">    		:returns: None</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+        	<span class="bp">self</span><span class="o">.</span><span class="n">prop_name</span> <span class="o">=</span> <span class="n">prop_name</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">prop_value</span> <span class="o">=</span> <span class="n">prop_value</span>
+</div>
+<div class="viewcode-block" id="Advisories"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Advisories">[docs]</a><span class="k">class</span> <span class="nc">Advisories</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;Adivosry group list</span>
+
+<span class="sd">	:notes: Distance, date of last update, name, city, color(status), country, longitude, properties, state, latitude, type, id</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">last_updated</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Advisories key pair</span>
+
+<span class="sd">		:param distance: Distance to neareast advisory</span>
+<span class="sd">		:param last_updated: Advisory date</span>
+<span class="sd">		:param name: Advisory name</span>
+<span class="sd">		:param city: Advisory city</span>
+<span class="sd">		:param color: Green-ok, Yellow-Advise, Red-NoFly</span>
+<span class="sd">		:param country: Advisory country</span>
+<span class="sd">		:param longitude: Advisory location longitude</span>
+<span class="sd">		:param properties: Advisory information</span>
+<span class="sd">		:param state: Advisory state</span>
+<span class="sd">		:param latitude: Advisory location latitude</span>
+<span class="sd">		:param type: Advisory type</span>
+<span class="sd">		:param id: Advisory unique ID</span>
+<span class="sd">    		:returns: None</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+        	<span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>
+        	<span class="bp">self</span><span class="o">.</span><span class="n">last_updated</span> <span class="o">=</span> <span class="n">last_updated</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="n">city</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">country</span> <span class="o">=</span> <span class="n">country</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">longitude</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">properties</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">latitude</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+</div>
+<div class="viewcode-block" id="Requirement"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Requirement">[docs]</a><span class="k">class</span> <span class="nc">Requirement</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Notification requirments contact key pair list</span>
+
+<span class="sd">    	&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Requirement.enum"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Requirement.enum">[docs]</a>	<span class="k">def</span> <span class="nf">enum</span><span class="p">(</span><span class="o">*</span><span class="n">sequential</span><span class="p">,</span> <span class="o">**</span><span class="n">named</span><span class="p">):</span>
+    		<span class="n">enums</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sequential</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequential</span><span class="p">))),</span> <span class="o">**</span><span class="n">named</span><span class="p">)</span>
+    		<span class="n">reverse</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">enums</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+    		<span class="n">enums</span><span class="p">[</span><span class="s">&#39;reverse_mapping&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reverse</span>
+		<span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="s">&#39;Enum&#39;</span><span class="p">,</span> <span class="p">(),</span> <span class="n">enums</span><span class="p">)</span>
+</div>
+	<span class="n">State</span> <span class="o">=</span> <span class="n">enum</span><span class="p">(</span><span class="n">digital</span><span class="o">=</span><span class="s">&#39;digital&#39;</span><span class="p">,</span> <span class="n">phone</span><span class="o">=</span><span class="s">&#39;phone&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Weather"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Weather">[docs]</a><span class="k">class</span> <span class="nc">Weather</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Weather control parameters</span>
+
+<span class="sd">	:param on: Enable weather data</span>
+<span class="sd">	:param off: Disable weather data</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+	<span class="n">on</span><span class="o">=</span><span class="s">&quot;true&quot;</span>
+	<span class="n">off</span><span class="o">=</span><span class="s">&quot;false&quot;</span>
+</div>
+<div class="viewcode-block" id="Public"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Public">[docs]</a><span class="k">class</span> <span class="nc">Public</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Make flight public</span>
+
+<span class="sd">	:param on: Public flight</span>
+<span class="sd">	:param off: Private flight</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+	<span class="n">on</span><span class="o">=</span><span class="bp">True</span>
+	<span class="n">off</span><span class="o">=</span><span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Notify"><a class="viewcode-back" href="../../airmap.html#airmap.airdefs.Notify">[docs]</a><span class="k">class</span> <span class="nc">Notify</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Enable notifications</span>
+
+<span class="sd">	:param on: Enable notifications</span>
+<span class="sd">	:param off: Disable notifications</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+	<span class="n">on</span><span class="o">=</span><span class="bp">True</span>
+	<span class="n">off</span><span class="o">=</span><span class="bp">False</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Airmap V2 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Ricardo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

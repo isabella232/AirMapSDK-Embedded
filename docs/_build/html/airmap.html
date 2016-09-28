@@ -1,0 +1,859 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>airmap Package &mdash; Airmap V2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'V2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Airmap V2 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to AirMap’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to AirMap’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Airmap V2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="airmap-package">
+<h1>airmap Package<a class="headerlink" href="#airmap-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-airmap.airdefs">
+<span id="airdefs-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">airdefs</span></tt> Module<a class="headerlink" href="#module-airmap.airdefs" title="Permalink to this headline">¶</a></h2>
+<p>airdefs
+AirMapSDK</p>
+<p>Created by AirMap Team on 6/28/16.
+Copyright (c) 2016 AirMap, Inc. All rights reserved.</p>
+<dl class="class">
+<dt id="airmap.airdefs.Advisories">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Advisories</tt><big>(</big><em>distance</em>, <em>last_updated</em>, <em>name</em>, <em>city</em>, <em>color</em>, <em>country</em>, <em>longitude</em>, <em>properties</em>, <em>state</em>, <em>latitude</em>, <em>type</em>, <em>id</em><big>)</big><a class="reference internal" href="_modules/airmap/airdefs.html#Advisories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Advisories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adivosry group list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Notes:</th><td class="field-body">Distance, date of last update, name, city, color(status), country, longitude, properties, state, latitude, type, id</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="airmap.airdefs.Advisory">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Advisory</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Advisory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Advisory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advisoy information (Pre-Flight, In-Flight)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Notes:</th><td class="field-body">Advisory status color list</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="airmap.airdefs.Advisory.Color">
+<em class="property">class </em><tt class="descname">Color</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Advisory.Color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Advisory.Color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flight status color code</p>
+<dl class="attribute">
+<dt id="airmap.airdefs.Advisory.Color.Colors">
+<tt class="descname">Colors</tt><a class="headerlink" href="#airmap.airdefs.Advisory.Color.Colors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color code</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gray</strong> &#8211; Disbabled</li>
+<li><strong>green</strong> &#8211; Go</li>
+<li><strong>yellow</strong> &#8211; Advise</li>
+<li><strong>red</strong> &#8211; NoFly</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Enum</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airmap.airdefs.Advisory.Color.enum">
+<tt class="descname">enum</tt><big>(</big><em>*sequential</em>, <em>**named</em><big>)</big><a class="reference internal" href="_modules/airmap/airdefs.html#Advisory.Color.enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Advisory.Color.enum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airmap.airdefs.Globals">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Globals</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Globals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Globals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Global settings</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Notes:</th><td class="field-body">Session parametes address, port, timeot, api key, token, pilot id, flight id</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.AirConnected">
+<tt class="descname">AirConnected</tt><em class="property"> = False</em><a class="headerlink" href="#airmap.airdefs.Globals.AirConnected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.airdefs.Globals.dbgPrint">
+<tt class="descname">dbgPrint</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/airmap/airdefs.html#Globals.dbgPrint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Globals.dbgPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Debug send to console</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> &#8211; Debug or information to send to console</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.httpPort">
+<tt class="descname">httpPort</tt><em class="property"> = 80</em><a class="headerlink" href="#airmap.airdefs.Globals.httpPort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.httpsAddr">
+<tt class="descname">httpsAddr</tt><em class="property"> = 'api.airmap.io'</em><a class="headerlink" href="#airmap.airdefs.Globals.httpsAddr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.httpsPort">
+<tt class="descname">httpsPort</tt><em class="property"> = 443</em><a class="headerlink" href="#airmap.airdefs.Globals.httpsPort" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.keyAddr">
+<tt class="descname">keyAddr</tt><em class="property"> = 'sso.airmap.io'</em><a class="headerlink" href="#airmap.airdefs.Globals.keyAddr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.myFlightID">
+<tt class="descname">myFlightID</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.airdefs.Globals.myFlightID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.myToken">
+<tt class="descname">myToken</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.airdefs.Globals.myToken" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.pilotIDValid">
+<tt class="descname">pilotIDValid</tt><em class="property"> = False</em><a class="headerlink" href="#airmap.airdefs.Globals.pilotIDValid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.pilot_id">
+<tt class="descname">pilot_id</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.airdefs.Globals.pilot_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.airdefs.Globals.strPrint">
+<tt class="descname">strPrint</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/airmap/airdefs.html#Globals.strPrint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Globals.strPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Information send to console</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> &#8211; information to send to console</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.telemetryAddr">
+<tt class="descname">telemetryAddr</tt><em class="property"> = 'api-aero-telemetry.airmap.com'</em><a class="headerlink" href="#airmap.airdefs.Globals.telemetryAddr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.thisCID">
+<tt class="descname">thisCID</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.airdefs.Globals.thisCID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.timeOut">
+<tt class="descname">timeOut</tt><em class="property"> = 18</em><a class="headerlink" href="#airmap.airdefs.Globals.timeOut" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Globals.xapikey">
+<tt class="descname">xapikey</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.airdefs.Globals.xapikey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airmap.airdefs.Notify">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Notify</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Notify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Notify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable notifications</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>on</strong> &#8211; Enable notifications</li>
+<li><strong>off</strong> &#8211; Disable notifications</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="airmap.airdefs.Notify.off">
+<tt class="descname">off</tt><em class="property"> = False</em><a class="headerlink" href="#airmap.airdefs.Notify.off" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Notify.on">
+<tt class="descname">on</tt><em class="property"> = True</em><a class="headerlink" href="#airmap.airdefs.Notify.on" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airmap.airdefs.Properties">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Properties</tt><big>(</big><em>prop_name</em>, <em>prop_value</em><big>)</big><a class="reference internal" href="_modules/airmap/airdefs.html#Properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name to Value Keypairs</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="airmap.airdefs.Public">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Public</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Public" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make flight public</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>on</strong> &#8211; Public flight</li>
+<li><strong>off</strong> &#8211; Private flight</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="airmap.airdefs.Public.off">
+<tt class="descname">off</tt><em class="property"> = False</em><a class="headerlink" href="#airmap.airdefs.Public.off" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Public.on">
+<tt class="descname">on</tt><em class="property"> = True</em><a class="headerlink" href="#airmap.airdefs.Public.on" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airmap.airdefs.Requirement">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Requirement</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Requirement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Requirement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notification requirments contact key pair list</p>
+<dl class="attribute">
+<dt id="airmap.airdefs.Requirement.State">
+<tt class="descname">State</tt><a class="headerlink" href="#airmap.airdefs.Requirement.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Enum</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airmap.airdefs.Requirement.enum">
+<tt class="descname">enum</tt><big>(</big><em>*sequential</em>, <em>**named</em><big>)</big><a class="reference internal" href="_modules/airmap/airdefs.html#Requirement.enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Requirement.enum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airmap.airdefs.Startup">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Startup</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Startup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Startup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Startup configuration</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Notes:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="airmap.airdefs.Startup.Drone">
+<em class="property">class </em><tt class="descname">Drone</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Startup.Drone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Startup.Drone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drone information (ID, Location, Status)</p>
+<dl class="attribute">
+<dt id="airmap.airdefs.Startup.Drone.State">
+<tt class="descname">State</tt><a class="headerlink" href="#airmap.airdefs.Startup.Drone.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Enum</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airmap.airdefs.Startup.Drone.enum">
+<tt class="descname">enum</tt><big>(</big><em>*sequential</em>, <em>**named</em><big>)</big><a class="reference internal" href="_modules/airmap/airdefs.html#Startup.Drone.enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Startup.Drone.enum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="airmap.airdefs.Weather">
+<em class="property">class </em><tt class="descclassname">airmap.airdefs.</tt><tt class="descname">Weather</tt><a class="reference internal" href="_modules/airmap/airdefs.html#Weather"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.airdefs.Weather" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weather control parameters</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>on</strong> &#8211; Enable weather data</li>
+<li><strong>off</strong> &#8211; Disable weather data</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="airmap.airdefs.Weather.off">
+<tt class="descname">off</tt><em class="property"> = 'false'</em><a class="headerlink" href="#airmap.airdefs.Weather.off" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.airdefs.Weather.on">
+<tt class="descname">on</tt><em class="property"> = 'true'</em><a class="headerlink" href="#airmap.airdefs.Weather.on" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-airmap.connect">
+<span id="connect-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">connect</span></tt> Module<a class="headerlink" href="#module-airmap.connect" title="Permalink to this headline">¶</a></h2>
+<p>connect
+AirMapSDK</p>
+<p>Created by AirMap Team on 6/28/16.
+Copyright (c) 2016 AirMap, Inc. All rights reserved.</p>
+<dl class="class">
+<dt id="airmap.connect.Connect">
+<em class="property">class </em><tt class="descclassname">airmap.connect.</tt><tt class="descname">Connect</tt><a class="reference internal" href="_modules/airmap/connect.html#Connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.connect.Connect" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="airmap.connect.Connect.connect">
+<tt class="descname">connect</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/connect.html#Connect.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.connect.Connect.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to service</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True - if connected otherwise False</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.connect.Connect.connection">
+<tt class="descname">connection</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.connect.Connect.connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connection instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Notes:</th><td class="field-body">HTTPS access variable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airmap.connect.Connect.get_SecureToken">
+<tt class="descname">get_SecureToken</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/connect.html#Connect.get_SecureToken"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.connect.Connect.get_SecureToken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve security token and refresh</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Token if successful otherwise False</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Todo:</th><td class="field-body">Remove hardcoded token and add token from https endpoint based on CID</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airmap.connect.Connect.get_boardID">
+<tt class="descname">get_boardID</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/connect.html#Connect.get_boardID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.connect.Connect.get_boardID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve CID from mmcblk0</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">CID otherwise False</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.connect.Connect.headers">
+<tt class="descname">headers</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.connect.Connect.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connection headerssecurity and format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Notes:</th><td class="field-body">Security and format headers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.connect.Connect.os">
+<tt class="descname">os</tt><em class="property"> = &lt;module 'os' from '/usr/lib/python2.7/os.pyc'&gt;</em><a class="headerlink" href="#airmap.connect.Connect.os" title="Permalink to this definition">¶</a></dt>
+<dd><p>OS access</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Notes:</th><td class="field-body">Run sys commands</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airmap.connect.Connect.set_Timeout">
+<tt class="descname">set_Timeout</tt><big>(</big><em>time_out</em><big>)</big><a class="reference internal" href="_modules/airmap/connect.html#Connect.set_Timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.connect.Connect.set_Timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set https request timeout time</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time_out</strong> &#8211; Timeout time in seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True - Success, False - Fail</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airmap.connect.Connect.set_XAPIKey">
+<tt class="descname">set_XAPIKey</tt><big>(</big><em>xapikey</em><big>)</big><a class="reference internal" href="_modules/airmap/connect.html#Connect.set_XAPIKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.connect.Connect.set_XAPIKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set https request timeout time</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xapikey</strong> &#8211; X-API-Key from developers account</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True - Success, False - Fail</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.connect.Connect.thisGlobals">
+<tt class="descname">thisGlobals</tt><em class="property"> = &lt;airmap.airdefs.Globals instance at 0x2b5bef5ce2d8&gt;</em><a class="headerlink" href="#airmap.connect.Connect.thisGlobals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Global parameter access</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Notes:</th><td class="field-body">Endpoint address, ports, token, id(s)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-airmap.statusAPI">
+<span id="statusapi-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">statusAPI</span></tt> Module<a class="headerlink" href="#module-airmap.statusAPI" title="Permalink to this headline">¶</a></h2>
+<p>statusAPI
+AirMapSDK</p>
+<p>Created by AirMap Team on 6/28/16.
+Copyright (c) 2016 AirMap, Inc. All rights reserved.</p>
+<dl class="class">
+<dt id="airmap.statusAPI.Status">
+<em class="property">class </em><tt class="descclassname">airmap.statusAPI.</tt><tt class="descname">Status</tt><a class="reference internal" href="_modules/airmap/statusAPI.html#Status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="airmap.statusAPI.Status.cmd_ProcessAdvisories">
+<tt class="descname">cmd_ProcessAdvisories</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.cmd_ProcessAdvisories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.cmd_ProcessAdvisories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.statusAPI.Status.connection">
+<tt class="descname">connection</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.statusAPI.Status.connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_Advisories">
+<tt class="descname">get_Advisories</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_Advisories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_Advisories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_Advisory">
+<tt class="descname">get_Advisory</tt><big>(</big><em>id</em><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_Advisory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_Advisory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_Condition">
+<tt class="descname">get_Condition</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_Condition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_Condition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_Humidity">
+<tt class="descname">get_Humidity</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_Humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_Humidity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_MaxDistance">
+<tt class="descname">get_MaxDistance</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_MaxDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_MaxDistance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_Precipitation">
+<tt class="descname">get_Precipitation</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_Precipitation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_Precipitation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_StatusCode">
+<tt class="descname">get_StatusCode</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_StatusCode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_StatusCode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_StatusColor">
+<tt class="descname">get_StatusColor</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_StatusColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_StatusColor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_Temperature">
+<tt class="descname">get_Temperature</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_Temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_Temperature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_Visibility">
+<tt class="descname">get_Visibility</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_Visibility"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_Visibility" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_WindGusting">
+<tt class="descname">get_WindGusting</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_WindGusting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_WindGusting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_WindHeading">
+<tt class="descname">get_WindHeading</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_WindHeading"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_WindHeading" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_WindSpeed">
+<tt class="descname">get_WindSpeed</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_WindSpeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_WindSpeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.get_status">
+<tt class="descname">get_status</tt><big>(</big><em>gps_lat</em>, <em>gps_lon</em>, <em>weather</em><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.get_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.get_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.statusAPI.Status.headers">
+<tt class="descname">headers</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.statusAPI.Status.headers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.statusAPI.Status.levelDown">
+<tt class="descname">levelDown</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/airmap/statusAPI.html#Status.levelDown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.statusAPI.Status.levelDown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.statusAPI.Status.localAdvisories">
+<tt class="descname">localAdvisories</tt><em class="property"> = []</em><a class="headerlink" href="#airmap.statusAPI.Status.localAdvisories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.statusAPI.Status.localLevelDown">
+<tt class="descname">localLevelDown</tt><em class="property"> = []</em><a class="headerlink" href="#airmap.statusAPI.Status.localLevelDown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.statusAPI.Status.localProperties">
+<tt class="descname">localProperties</tt><em class="property"> = []</em><a class="headerlink" href="#airmap.statusAPI.Status.localProperties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.statusAPI.Status.os">
+<tt class="descname">os</tt><em class="property"> = &lt;module 'os' from '/usr/lib/python2.7/os.pyc'&gt;</em><a class="headerlink" href="#airmap.statusAPI.Status.os" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.statusAPI.Status.status_json">
+<tt class="descname">status_json</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.statusAPI.Status.status_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.statusAPI.Status.thisGlobals">
+<tt class="descname">thisGlobals</tt><em class="property"> = &lt;airmap.airdefs.Globals instance at 0x2b5bef5ce440&gt;</em><a class="headerlink" href="#airmap.statusAPI.Status.thisGlobals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-airmap.flightAPI">
+<span id="flightapi-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">flightAPI</span></tt> Module<a class="headerlink" href="#module-airmap.flightAPI" title="Permalink to this headline">¶</a></h2>
+<p>flightAPI
+AirMapSDK</p>
+<p>Created by AirMap Team on 6/28/16.
+Copyright (c) 2016 AirMap, Inc. All rights reserved.</p>
+<dl class="class">
+<dt id="airmap.flightAPI.Flight">
+<em class="property">class </em><tt class="descclassname">airmap.flightAPI.</tt><tt class="descname">Flight</tt><a class="reference internal" href="_modules/airmap/flightAPI.html#Flight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.flightAPI.Flight" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="airmap.flightAPI.Flight.cmd_KillFlights">
+<tt class="descname">cmd_KillFlights</tt><big>(</big><em>pilotID</em><big>)</big><a class="reference internal" href="_modules/airmap/flightAPI.html#Flight.cmd_KillFlights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.flightAPI.Flight.cmd_KillFlights" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.flightAPI.Flight.connection">
+<tt class="descname">connection</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.flightAPI.Flight.connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.flightAPI.Flight.create_FlightPoint">
+<tt class="descname">create_FlightPoint</tt><big>(</big><em>time</em>, <em>lat</em>, <em>lon</em>, <em>public</em>, <em>notify</em><big>)</big><a class="reference internal" href="_modules/airmap/flightAPI.html#Flight.create_FlightPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.flightAPI.Flight.create_FlightPoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.flightAPI.Flight.delete_Flight">
+<tt class="descname">delete_Flight</tt><big>(</big><em>flightID</em><big>)</big><a class="reference internal" href="_modules/airmap/flightAPI.html#Flight.delete_Flight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.flightAPI.Flight.delete_Flight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.flightAPI.Flight.end_Flight">
+<tt class="descname">end_Flight</tt><big>(</big><em>flightID</em><big>)</big><a class="reference internal" href="_modules/airmap/flightAPI.html#Flight.end_Flight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.flightAPI.Flight.end_Flight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.flightAPI.Flight.get_FlightList">
+<tt class="descname">get_FlightList</tt><big>(</big><em>pilotID</em><big>)</big><a class="reference internal" href="_modules/airmap/flightAPI.html#Flight.get_FlightList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.flightAPI.Flight.get_FlightList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.flightAPI.Flight.get_PilotID">
+<tt class="descname">get_PilotID</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/airmap/flightAPI.html#Flight.get_PilotID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.flightAPI.Flight.get_PilotID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.flightAPI.Flight.headers">
+<tt class="descname">headers</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.flightAPI.Flight.headers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.flightAPI.Flight.os">
+<tt class="descname">os</tt><em class="property"> = &lt;module 'os' from '/usr/lib/python2.7/os.pyc'&gt;</em><a class="headerlink" href="#airmap.flightAPI.Flight.os" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.flightAPI.Flight.thisGlobals">
+<tt class="descname">thisGlobals</tt><em class="property"> = &lt;airmap.airdefs.Globals instance at 0x2b5bef5ce5f0&gt;</em><a class="headerlink" href="#airmap.flightAPI.Flight.thisGlobals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-airmap.drone">
+<span id="drone-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">drone</span></tt> Module<a class="headerlink" href="#module-airmap.drone" title="Permalink to this headline">¶</a></h2>
+<p>drone
+AirMapSDK</p>
+<p>Created by AirMap Team on 6/28/16.
+Copyright (c) 2016 AirMap, Inc. All rights reserved.</p>
+<dl class="class">
+<dt id="airmap.drone.drone">
+<em class="property">class </em><tt class="descclassname">airmap.drone.</tt><tt class="descname">drone</tt><a class="reference internal" href="_modules/airmap/drone.html#drone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.drone.drone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-airmap.log">
+<span id="log-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">log</span></tt> Module<a class="headerlink" href="#module-airmap.log" title="Permalink to this headline">¶</a></h2>
+<p>log
+AirMapSDK</p>
+<p>Created by AirMap Team on 6/28/16.
+Copyright (c) 2016 AirMap, Inc. All rights reserved.</p>
+<dl class="class">
+<dt id="airmap.log.log">
+<em class="property">class </em><tt class="descclassname">airmap.log.</tt><tt class="descname">log</tt><a class="reference internal" href="_modules/airmap/log.html#log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.log.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-airmap.telemetryAPI">
+<span id="telemetryapi-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">telemetryAPI</span></tt> Module<a class="headerlink" href="#module-airmap.telemetryAPI" title="Permalink to this headline">¶</a></h2>
+<p>telemetryAPI
+AirMapSDK</p>
+<p>Created by AirMap Team on 6/28/16.
+Copyright (c) 2016 AirMap, Inc. All rights reserved.</p>
+<dl class="class">
+<dt id="airmap.telemetryAPI.Telemetry">
+<em class="property">class </em><tt class="descclassname">airmap.telemetryAPI.</tt><tt class="descname">Telemetry</tt><a class="reference internal" href="_modules/airmap/telemetryAPI.html#Telemetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.telemetryAPI.Telemetry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="airmap.telemetryAPI.Telemetry.connection">
+<tt class="descname">connection</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.telemetryAPI.Telemetry.connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.telemetryAPI.Telemetry.headers">
+<tt class="descname">headers</tt><em class="property"> = None</em><a class="headerlink" href="#airmap.telemetryAPI.Telemetry.headers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.telemetryAPI.Telemetry.os">
+<tt class="descname">os</tt><em class="property"> = &lt;module 'os' from '/usr/lib/python2.7/os.pyc'&gt;</em><a class="headerlink" href="#airmap.telemetryAPI.Telemetry.os" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.telemetryAPI.Telemetry.post_Telemetry">
+<tt class="descname">post_Telemetry</tt><big>(</big><em>flightID</em>, <em>lat</em>, <em>lon</em>, <em>alt</em>, <em>ground_speed</em>, <em>heading</em>, <em>barometer</em>, <em>status</em>, <em>battery</em>, <em>drone</em>, <em>seq</em>, <em>logused</em><big>)</big><a class="reference internal" href="_modules/airmap/telemetryAPI.html#Telemetry.post_Telemetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.telemetryAPI.Telemetry.post_Telemetry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="airmap.telemetryAPI.Telemetry.put_Telemetry">
+<tt class="descname">put_Telemetry</tt><big>(</big><em>flightID</em>, <em>lat</em>, <em>lon</em>, <em>alt</em>, <em>ground_speed</em>, <em>heading</em>, <em>barometer</em>, <em>status</em>, <em>battery</em>, <em>drone</em>, <em>seq</em>, <em>logused</em><big>)</big><a class="reference internal" href="_modules/airmap/telemetryAPI.html#Telemetry.put_Telemetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.telemetryAPI.Telemetry.put_Telemetry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="airmap.telemetryAPI.Telemetry.thisGlobals">
+<tt class="descname">thisGlobals</tt><em class="property"> = &lt;airmap.airdefs.Globals instance at 0x2b5bef5ce710&gt;</em><a class="headerlink" href="#airmap.telemetryAPI.Telemetry.thisGlobals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-airmap.alertsAPI">
+<span id="alertsapi-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">alertsAPI</span></tt> Module<a class="headerlink" href="#module-airmap.alertsAPI" title="Permalink to this headline">¶</a></h2>
+<p>alertsAPI
+AirMapSDK</p>
+<p>Created by AirMap Team on 6/28/16.
+Copyright (c) 2016 AirMap, Inc. All rights reserved.</p>
+<dl class="class">
+<dt id="airmap.alertsAPI.alertsAPI">
+<em class="property">class </em><tt class="descclassname">airmap.alertsAPI.</tt><tt class="descname">alertsAPI</tt><a class="reference internal" href="_modules/airmap/alertsAPI.html#alertsAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#airmap.alertsAPI.alertsAPI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">airmap Package</a><ul>
+<li><a class="reference internal" href="#module-airmap.airdefs"><tt class="docutils literal"><span class="pre">airdefs</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-airmap.connect"><tt class="docutils literal"><span class="pre">connect</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-airmap.statusAPI"><tt class="docutils literal"><span class="pre">statusAPI</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-airmap.flightAPI"><tt class="docutils literal"><span class="pre">flightAPI</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-airmap.drone"><tt class="docutils literal"><span class="pre">drone</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-airmap.log"><tt class="docutils literal"><span class="pre">log</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-airmap.telemetryAPI"><tt class="docutils literal"><span class="pre">telemetryAPI</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-airmap.alertsAPI"><tt class="docutils literal"><span class="pre">alertsAPI</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to AirMap&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/airmap.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to AirMap’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">Airmap V2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Ricardo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

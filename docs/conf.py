@@ -19,7 +19,7 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, '/home/everclear/Projects/AirMapSDK')
+sys.path.insert(0, '/home/everclear/Projects/AirMapSDK-Embedded')
 
 # -- General configuration ------------------------------------------------
 
@@ -37,7 +37,7 @@ extensions = [
     'rst2pdf.pdfbuilder',
 ]
 
-pdf_documents = [('index', u'rst2pdf', u'AirMapSDK', u'Airmap'),]
+pdf_documents = [('index', u'rst2pdf', u'AirMapSDK-Embedded', u'AirMap'),]
        
 # index - master document
 # rst2pdf - name of the generated pdf

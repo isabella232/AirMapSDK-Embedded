@@ -30,6 +30,11 @@ if test:
 	ground_speed = '10.8'
 	heading = '84.6'
 	barometer = '28.4'
+	log_perct = '31.2'
+	bogeyid = '37849329'
+	drone_mode = "follow-me"
+	battery_chrg= '11.2'
+	cur_status= "warning"
 	print "GPS test mode enabled..."
 else:
 	try:
@@ -59,7 +64,7 @@ airtelemetry = Telemetry()
 airconnect.set_Timeout(16)
 airconnect.set_XAPIKey(xapikey)
 
-#airconnect.get_CIDID()
+airconnect.get_boardID()
 
 Ret = airconnect.connect()
 
@@ -155,7 +160,8 @@ if Ret:
 		airflight.end_Flight(flightID)
 		#airflight.delete_Flight(flightID)
 
-		response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer)
+		print "Telemetry..."
+		response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
 		print response
 
 		airflight.get_FlightList(myPilotID)

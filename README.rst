@@ -12,20 +12,9 @@ AirMapSDK is a Python library for interfacing with the `Airmap <https://develope
 | X-API-Key from your account
 | GPS data (fake gps included)
 | OAuth token
-| xmlrpclib.py
 | pip
 | getAirmap.py (copy to /home/root/installs directory or similar)
-| python requests package
-
-**Install Requests**
-
-| Insert USB drive with requests-master.zip
-| sudo mount /dev/sda1 /mnt
-| cp /mnt/requests-master.zip /home/root/new_dir
-| cd /home/root/new_dir
-| unzip requests-master.zip
-| cd requests-master
-| sudo python setup.py install
+| AirMapSDK-Embedded is pre-installed
 
 **Wi-Fi Connectivity**
 
@@ -35,35 +24,23 @@ AirMapSDK is a Python library for interfacing with the `Airmap <https://develope
 | sudo wpa_supplicant -i wlan0 -c /etc/wpa-Aero.conf &
 | sudo dhclient wlan0
 
-**Install simplejson**
+**Update AirMapSDK-Embedded**
 
-| cd /home/root
-| mkdir installs
-| cd installs
-| python getAirmap.py simplejson simplejson
-| unzip simplejson-master.zip
-| cd simplejson-master
-| sudo python setup.py install
-
-**Install AirMapSDK**
-
-| cd /home/root
-| mkdir Installs
-| cd installs
-| python getAirmap.py airmapinc EmbeddedSDK
-| unzip EmbeddedSDK-master.zip
-| cd EmbeddedSDK-master
+| cd /etc/airmap
+| python getAirmap.py airmap AirMapSDK-Embedded
+| unzip AirMapSDK-Embedded-master.zip
+| cd AirMapSDK-Embedded-master
 
 **User Example**
 
-| cd /home/root/Installs/EmbeddedSDK-master
+| cd /etc/airmap/AirMapSDK-Embedded
 | python userapp.py
 
 
 **API Example**
 
 | (connect) airmap.connect.set_XAPIKey(xapikey) - Set your X-API-Key from your Airmap account
-| (connect) airmap.connect.get_CIDID() - Retrieve CID information
+| (connect) airmap.connect.get_boardID() - Retrieve CID information
 | (connect) airmap.connect.connect() - Check internet connection and endpoint status Returns: True if ready
 | (statusAPI) airmap.statusAPI.get_status(lat,lon,Weather.on) - Given position retreive airspace data
 | (statusAPI) Parse status information including weather, advisories, and maximum flight bounds (see statusAPI documentation)

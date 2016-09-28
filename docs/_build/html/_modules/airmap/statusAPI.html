@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>airmap.statusAPI &mdash; Airmap V2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'V2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Airmap V2 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Airmap V2 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for airmap.statusAPI</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  statusAPI</span>
+<span class="sd">  AirMapSDK</span>
+
+<span class="sd">  Created by AirMap Team on 6/28/16.</span>
+<span class="sd">  Copyright (c) 2016 AirMap, Inc. All rights reserved.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c"># statusAPI.py -- Status API functions</span>
+
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">httplib</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">ssl</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">airdefs</span> <span class="kn">import</span> <span class="n">Advisory</span><span class="p">,</span> <span class="n">Advisories</span><span class="p">,</span> <span class="n">Properties</span><span class="p">,</span> <span class="n">Globals</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<div class="viewcode-block" id="Status"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status">[docs]</a><span class="k">class</span> <span class="nc">Status</span><span class="p">:</span>
+	
+	<span class="n">os</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s">&#39;os&#39;</span><span class="p">)</span>
+	<span class="n">connection</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">headers</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">status_json</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="n">localAdvisories</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">localProperties</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">localLevelDown</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">thisGlobals</span> <span class="o">=</span> <span class="n">Globals</span><span class="p">()</span>
+	
+
+<div class="viewcode-block" id="Status.levelDown"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.levelDown">[docs]</a>	<span class="k">def</span> <span class="nf">levelDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">localLevelDown</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">Level</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+			<span class="c">#print Level</span>
+			<span class="k">for</span> <span class="n">entries</span> <span class="ow">in</span> <span class="n">Level</span><span class="p">:</span>
+    				<span class="bp">self</span><span class="o">.</span><span class="n">localLevelDown</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Properties</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">Level</span><span class="p">[</span><span class="n">entries</span><span class="p">]))</span>
+				<span class="c">#print str(entries) + &quot; : &quot; + str(Level[entries])</span>
+</div>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">pass</span>
+
+<div class="viewcode-block" id="Status.get_status"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_status">[docs]</a>	<span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">gps_lat</span><span class="p">,</span><span class="n">gps_lon</span><span class="p">,</span><span class="n">weather</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">Globals</span><span class="o">.</span><span class="n">AirConnected</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">Globals</span><span class="o">.</span><span class="n">httpsAddr</span><span class="p">,</span> <span class="n">Globals</span><span class="o">.</span><span class="n">httpsPort</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">Globals</span><span class="o">.</span><span class="n">timeOut</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">Globals</span><span class="o">.</span><span class="n">xapikey</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="s">&#39;/status/v2/point?latitude=&#39;</span><span class="o">+</span><span class="n">gps_lat</span><span class="o">+</span><span class="s">&#39;&amp;longitude=&#39;</span><span class="o">+</span><span class="n">gps_lon</span><span class="o">+</span><span class="s">&#39;&amp;weather=&#39;</span><span class="o">+</span><span class="n">weather</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+        			<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">status_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+				<span class="n">Globals</span><span class="o">.</span><span class="n">strPrint</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thisGlobals</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">)</span>
+				<span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;success&quot;</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+				<span class="n">Globals</span><span class="o">.</span><span class="n">strPrint</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thisGlobals</span><span class="p">,</span><span class="s">&quot;Airmap: No Connection or slow connection -&gt;Request Timeout...&quot;</span><span class="p">)</span>
+				<span class="c">#Globals.strPrint(self.thisGlobals,str(e))</span>
+			
+			<span class="k">return</span> <span class="bp">False</span>
+				
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">Globals</span><span class="o">.</span><span class="n">strPrint</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thisGlobals</span><span class="p">,</span><span class="s">&quot;Not Connected&quot;</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_StatusColor"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_StatusColor">[docs]</a>	<span class="k">def</span> <span class="nf">get_StatusColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;advisory_color&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_StatusCode"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_StatusCode">[docs]</a>	<span class="k">def</span> <span class="nf">get_StatusCode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">Advisory</span><span class="o">.</span><span class="n">Color</span><span class="o">.</span><span class="n">Colors</span><span class="o">.</span><span class="n">reverse_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;advisory_color&#39;</span><span class="p">]]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_MaxDistance"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_MaxDistance">[docs]</a>	<span class="k">def</span> <span class="nf">get_MaxDistance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;max_safe_distance&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_Temperature"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_Temperature">[docs]</a>	<span class="k">def</span> <span class="nf">get_Temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;weather&#39;</span><span class="p">][</span><span class="s">&#39;temperature&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_Visibility"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_Visibility">[docs]</a>	<span class="k">def</span> <span class="nf">get_Visibility</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;weather&#39;</span><span class="p">][</span><span class="s">&#39;visibility&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_Humidity"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_Humidity">[docs]</a>	<span class="k">def</span> <span class="nf">get_Humidity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;weather&#39;</span><span class="p">][</span><span class="s">&#39;humidity&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_Condition"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_Condition">[docs]</a>	<span class="k">def</span> <span class="nf">get_Condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;weather&#39;</span><span class="p">][</span><span class="s">&#39;condition&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_Precipitation"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_Precipitation">[docs]</a>	<span class="k">def</span> <span class="nf">get_Precipitation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;weather&#39;</span><span class="p">][</span><span class="s">&#39;precipitation&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_WindGusting"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_WindGusting">[docs]</a>	<span class="k">def</span> <span class="nf">get_WindGusting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;weather&#39;</span><span class="p">][</span><span class="s">&#39;wind&#39;</span><span class="p">][</span><span class="s">&#39;gusting&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_WindSpeed"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_WindSpeed">[docs]</a>	<span class="k">def</span> <span class="nf">get_WindSpeed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;weather&#39;</span><span class="p">][</span><span class="s">&#39;wind&#39;</span><span class="p">][</span><span class="s">&#39;speed&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.get_WindHeading"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_WindHeading">[docs]</a>	<span class="k">def</span> <span class="nf">get_WindHeading</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;weather&#39;</span><span class="p">][</span><span class="s">&#39;wind&#39;</span><span class="p">][</span><span class="s">&#39;heading&#39;</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Status.cmd_ProcessAdvisories"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.cmd_ProcessAdvisories">[docs]</a>	<span class="k">def</span> <span class="nf">cmd_ProcessAdvisories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">advIndex</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">Advise</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_json</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;advisories&#39;</span><span class="p">]:</span>
+			<span class="c">#propIndex = 0</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">localProperties</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">Property</span> <span class="ow">in</span> <span class="n">Advise</span><span class="p">[</span><span class="s">&#39;properties&#39;</span><span class="p">]:</span>
+				<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;properties&#39;</span><span class="p">][</span><span class="n">Property</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;[&#39;</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">levelDown</span> <span class="p">(</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;properties&#39;</span><span class="p">][</span><span class="n">Property</span><span class="p">])</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">localProperties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Properties</span><span class="p">(</span><span class="n">Property</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">localLevelDown</span> <span class="p">))</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">localProperties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Properties</span><span class="p">(</span><span class="n">Property</span><span class="p">,</span> <span class="n">Advise</span><span class="p">[</span><span class="s">&#39;properties&#39;</span><span class="p">][</span><span class="n">Property</span><span class="p">]))</span>
+				<span class="c">#print self.localProperties[propIndex].prop_name</span>
+				<span class="c">#print self.localProperties[propIndex].prop_value</span>
+				<span class="c">#propIndex += 1</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">localAdvisories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Advisories</span><span class="p">(</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;distance&#39;</span><span class="p">],</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;last_updated&#39;</span><span class="p">],</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;city&#39;</span><span class="p">],</span>
+			<span class="n">Advise</span><span class="p">[</span><span class="s">&#39;color&#39;</span><span class="p">],</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;country&#39;</span><span class="p">],</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;longitude&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">localProperties</span><span class="p">,</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">],</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;latitude&#39;</span><span class="p">],</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">],</span><span class="n">Advise</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]))</span>
+			<span class="c">#print self.localAdvisories[advIndex].city</span>
+			<span class="c">#print Advise[&#39;distance&#39;]</span>
+			<span class="n">advIndex</span> <span class="o">+=</span> <span class="mi">1</span>
+		<span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Status.get_Advisories"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_Advisories">[docs]</a>	<span class="k">def</span> <span class="nf">get_Advisories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">localAdvisories</span>
+</div>
+<div class="viewcode-block" id="Status.get_Advisory"><a class="viewcode-back" href="../../airmap.html#airmap.statusAPI.Status.get_Advisory">[docs]</a>	<span class="k">def</span> <span class="nf">get_Advisory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">localAdvisories</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Airmap V2 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Ricardo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

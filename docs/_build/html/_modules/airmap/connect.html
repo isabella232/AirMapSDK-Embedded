@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>airmap.connect &mdash; Airmap V2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'V2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Airmap V2 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Airmap V2 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for airmap.connect</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  connect</span>
+<span class="sd">  AirMapSDK</span>
+
+<span class="sd">  Created by AirMap Team on 6/28/16.</span>
+<span class="sd">  Copyright (c) 2016 AirMap, Inc. All rights reserved.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c"># connect.py -- Connect API functions</span>
+
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">httplib</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">ssl</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">airdefs</span> <span class="kn">import</span> <span class="n">Advisory</span><span class="p">,</span> <span class="n">Advisories</span><span class="p">,</span> <span class="n">Properties</span><span class="p">,</span> <span class="n">Globals</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<div class="viewcode-block" id="Connect"><a class="viewcode-back" href="../../airmap.html#airmap.connect.Connect">[docs]</a><span class="k">class</span> <span class="nc">Connect</span><span class="p">:</span>
+	
+	<span class="n">os</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s">&#39;os&#39;</span><span class="p">)</span>
+	<span class="sd">&quot;&quot;&quot;OS access</span>
+
+<span class="sd"> 	:notes: Run sys commands </span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+	<span class="n">connection</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="sd">&quot;&quot;&quot;Connection instance</span>
+
+<span class="sd"> 	:notes: HTTPS access variable </span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+	<span class="n">headers</span> <span class="o">=</span> <span class="bp">None</span>
+	<span class="sd">&quot;&quot;&quot;Connection headerssecurity and format</span>
+
+<span class="sd"> 	:notes: Security and format headers</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+	<span class="n">thisGlobals</span> <span class="o">=</span> <span class="n">Globals</span><span class="p">()</span>
+	<span class="sd">&quot;&quot;&quot;Global parameter access</span>
+
+<span class="sd"> 	:notes: Endpoint address, ports, token, id(s)</span>
+<span class="sd">    	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Initialize connect find os set ssl context, get IP address</span>
+
+<span class="sd">    		:param None:</span>
+<span class="sd">    		:returns: None</span>
+
+<span class="sd">		:todo: Add ifconfig command to try to get ip address</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span><span class="p">:</span>
+				<span class="n">ssl</span><span class="o">.</span><span class="n">create_default_context</span><span class="p">()</span>
+			<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;posix&#39;</span><span class="p">:</span>
+				<span class="n">ssl</span><span class="o">.</span><span class="n">_create_default_https_context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">_create_unverified_context</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">ssl</span><span class="o">.</span><span class="n">_create_default_https_context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">_create_unverified_context</span>
+
+		<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+			<span class="k">pass</span>
+
+		<span class="k">try</span><span class="p">:</span>
+			<span class="c">#print socket.gethostname()</span>
+			<span class="n">thisIP</span> <span class="o">=</span> <span class="s">&quot;IP Address: &quot;</span> <span class="o">+</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">())</span>
+			<span class="c">#Globals.strPrint (self.thisGlobals, thisIP)</span>
+			
+		<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+			<span class="c">#Globals.strPrint (self.thisGlobals, &quot;No IP Found...&quot;)</span>
+			<span class="k">pass</span>
+
+<div class="viewcode-block" id="Connect.set_Timeout"><a class="viewcode-back" href="../../airmap.html#airmap.connect.Connect.set_Timeout">[docs]</a>	<span class="k">def</span> <span class="nf">set_Timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_out</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Set https request timeout time</span>
+
+<span class="sd">    		:param time_out: Timeout time in seconds</span>
+<span class="sd">    		:returns: True - Success, False - Fail</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">Globals</span><span class="o">.</span><span class="n">timeOut</span> <span class="o">=</span> <span class="n">time_out</span>
+			<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Connect.set_XAPIKey"><a class="viewcode-back" href="../../airmap.html#airmap.connect.Connect.set_XAPIKey">[docs]</a>	<span class="k">def</span> <span class="nf">set_XAPIKey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xapikey</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Set https request timeout time</span>
+
+<span class="sd">    		:param xapikey: X-API-Key from developers account</span>
+<span class="sd">    		:returns: True - Success, False - Fail</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">Globals</span><span class="o">.</span><span class="n">xapikey</span> <span class="o">=</span> <span class="n">xapikey</span>
+			<span class="k">return</span> <span class="bp">True</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">False</span>
+	</div>
+<div class="viewcode-block" id="Connect.get_boardID"><a class="viewcode-back" href="../../airmap.html#airmap.connect.Connect.get_boardID">[docs]</a>	<span class="k">def</span> <span class="nf">get_boardID</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Retrieve CID from mmcblk0</span>
+
+<span class="sd">    		:param: None</span>
+<span class="sd">    		:returns: CID otherwise False</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">Globals</span><span class="o">.</span><span class="n">thisCID</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s">&#39;./airprint&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+			<span class="k">print</span> <span class="s">&quot;boardID|&quot;</span> <span class="o">+</span> <span class="n">Globals</span><span class="o">.</span><span class="n">thisCID</span>
+			<span class="k">return</span> <span class="n">Globals</span><span class="o">.</span><span class="n">thisCID</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+			<span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="Connect.connect"><a class="viewcode-back" href="../../airmap.html#airmap.connect.Connect.connect">[docs]</a>	<span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Connect to service</span>
+
+<span class="sd">    		:param: None</span>
+<span class="sd">    		:returns: True - if connected otherwise False</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+		<span class="n">Globals</span><span class="o">.</span><span class="n">AirConnected</span> <span class="o">=</span> <span class="bp">False</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">Globals</span><span class="o">.</span><span class="n">httpsAddr</span><span class="p">,</span> <span class="n">Globals</span><span class="o">.</span><span class="n">httpsPort</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">Globals</span><span class="o">.</span><span class="n">timeOut</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">Globals</span><span class="o">.</span><span class="n">xapikey</span>
+			<span class="n">Globals</span><span class="o">.</span><span class="n">AirConnected</span> <span class="o">=</span> <span class="bp">True</span>	
+		<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span><span class="n">e</span><span class="p">:</span>
+			<span class="n">Globals</span><span class="o">.</span><span class="n">strPrint</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thisGlobals</span><span class="p">,</span> <span class="s">&quot;Not Connected... Check Device...&quot;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Globals</span><span class="o">.</span><span class="n">AirConnected</span>
+</div>
+<div class="viewcode-block" id="Connect.get_SecureToken"><a class="viewcode-back" href="../../airmap.html#airmap.connect.Connect.get_SecureToken">[docs]</a>	<span class="k">def</span> <span class="nf">get_SecureToken</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Retrieve security token and refresh</span>
+
+<span class="sd">    		:param: None</span>
+<span class="sd">    		:returns: Token if successful otherwise False</span>
+
+<span class="sd">		:todo: Remove hardcoded token and add token from https endpoint based on CID</span>
+<span class="sd">    		&quot;&quot;&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">connectAuth0</span> <span class="o">=</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">Globals</span><span class="o">.</span><span class="n">keyAddr</span><span class="p">,</span> <span class="n">Globals</span><span class="o">.</span><span class="n">httpsPort</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">Globals</span><span class="o">.</span><span class="n">timeOut</span><span class="p">)</span>
+			<span class="n">headers</span> <span class="o">=</span> <span class="n">Globals</span><span class="o">.</span><span class="n">xapikey</span>
+			<span class="n">connectAuth0</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="s">&#39;/delegation&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">&quot;refresh_token&quot;</span><span class="p">:</span><span class="s">&quot;ezKrfuSeSD8DA7w2Dq7gqsL10sYuKdVEXA6BIIJLEAJQh&quot;</span><span class="p">,</span><span class="s">&quot;grant_type&quot;</span><span class="p">:</span><span class="s">&quot;urn:ietf:params:oauth:grant-type:jwt-bearer&quot;</span><span class="p">,</span><span class="s">&quot;client_id&quot;</span><span class="p">:</span><span class="s">&quot;2iV1XSfdLJNOfZiTZ9JGdrNHtcNzYstt&quot;</span><span class="p">,</span><span class="s">&quot;api_type&quot;</span><span class="p">:</span><span class="s">&quot;app&quot;</span><span class="p">}),</span> <span class="n">headers</span><span class="p">)</span>
+        		<span class="n">result</span> <span class="o">=</span> <span class="n">connectAuth0</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        		<span class="c">#print(result)</span>
+			<span class="n">parsed_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+			<span class="n">Globals</span><span class="o">.</span><span class="n">myToken</span> <span class="o">=</span> <span class="n">parsed_json</span><span class="p">[</span><span class="s">&#39;id_token&#39;</span><span class="p">]</span>
+			<span class="c">#print Globals.myToken</span>
+		<span class="k">except</span><span class="p">:</span>
+        		<span class="k">print</span> <span class="s">&quot;OAuth2 Error...&quot;</span>
+			<span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+        		<span class="k">return</span> <span class="bp">False</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">Airmap V2 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Ricardo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

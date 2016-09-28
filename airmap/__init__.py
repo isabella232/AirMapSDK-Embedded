@@ -6,6 +6,7 @@
   Copyright (c) 2016 AirMap, Inc. All rights reserved.
 """
 
+import airdefs
 import connect
 import statusAPI
 import flightAPI

@@ -54,8 +54,8 @@ class Status:
 				Globals.strPrint (self.thisGlobals,self.status_json)
 				return (self.status_json['status'] == "success")
 			except Exception,e:
-				Globals.strPrint (self.thisGlobals,"Error: Request Timeout..")
-				Globals.strPrint(self.thisGlobals,str(e))
+				Globals.strPrint (self.thisGlobals,"Airmap: No Connection or slow connection ->Request Timeout...")
+				#Globals.strPrint(self.thisGlobals,str(e))
 			
 			return False
 				

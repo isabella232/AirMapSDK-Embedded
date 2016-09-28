@@ -30,12 +30,12 @@ class Telemetry:
 	def __init__(self):
 		pass
 
-	def put_Telemetry(self, flightID, lat, lon, alt, ground_speed, heading, barometer):
+	def put_Telemetry(self, flightID, lat, lon, alt, ground_speed, heading, barometer, status, battery, drone, seq, logused):
 		connectTelemetry = httplib.HTTPSConnection(Globals.telemetryAddr, Globals.httpsPort, timeout=Globals.timeOut)
 		headers = Globals.xapikey
-		print "..............................................."
+		#print "..............................................."
 		try:
-        		connectTelemetry.request('PUT', '/livemap/telemetry/{}'.format(flightID), json.dumps({"lat":float(lat),"lon":float(lon),"alt":float(alt),"timestamp":"{}".format(datetime.datetime.now()),"gs_ms":float(ground_speed),"true":float(heading),"baro":float(barometer)}), headers)
+        		connectTelemetry.request('PUT', '/livemap/telemetry/{}'.format(flightID), json.dumps({"lat":float(lat),"lon":float(lon),"alt":float(alt),"timestamp":"{}".format(datetime.datetime.now()),"gs_ms":float(ground_speed),"true":float(heading),"baro":float(barometer),"status":"{}".format(status),"battery":float(battery),"drone":"{}".format(drone),"seq":int(seq),"log":float(logused)}), headers)
         		result = connectTelemetry.getresponse().read()
 			#print result			
 			parsed_json = json.loads(result)
@@ -45,12 +45,12 @@ class Telemetry:
 			#traceback.print_exc()
 			print "No response from telemetry..."
 
-	def post_Telemetry(self, flightID, lat, lon, alt, ground_speed, heading, barometer):
+	def post_Telemetry(self, flightID, lat, lon, alt, ground_speed, heading, barometer, status, battery, drone, seq, logused):
 		connectTelemetry = httplib.HTTPSConnection(Globals.telemetryAddr, Globals.httpsPort, timeout=Globals.timeOut)
 		headers = Globals.xapikey
-		print "..............................................."
+		#print "..............................................."
 		try:
-        		connectTelemetry.request('POST', '/livemap/telemetry/{}'.format(flightID), json.dumps({"lat":float(lat),"lon":float(lon),"alt":float(alt),"timestamp":"{}".format(datetime.datetime.now()),"gs_ms":float(ground_speed),"true":float(heading),"baro":float(barometer)}), headers)
+        		connectTelemetry.request('POST', '/livemap/telemetry/{}'.format(flightID), json.dumps({"lat":float(lat),"lon":float(lon),"alt":float(alt),"timestamp":"{}".format(datetime.datetime.now()),"gs_ms":float(ground_speed),"true":float(heading),"baro":float(barometer),"status":"{}".format(status),"battery":float(battery),"drone":"{}".format(drone),"seq":int(seq),"log":float(logused)}), headers)
         		result = connectTelemetry.getresponse().read()
 			#print result			
 			parsed_json = json.loads(result)

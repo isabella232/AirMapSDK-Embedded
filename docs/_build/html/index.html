@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to AirMap’s documentation! &mdash; Airmap V2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'V2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Airmap V2 documentation" href="#" />
+    <link rel="next" title="airmap Package" href="airmap.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="airmap.html" title="airmap Package"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Airmap V2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-airmap-s-documentation">
+<h1>Welcome to AirMap&#8217;s documentation!<a class="headerlink" href="#welcome-to-airmap-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Airmap &#8211; Airspace Management For Drones.</p>
+<p>AirMapSDK is a Python library for interfacing with the <a class="reference external" href="https://developer.airmap.io">Airmap</a> API.</p>
+<img alt="_images/air-map-logo.png" src="_images/air-map-logo.png" />
+<img alt="_images/airmap-flow.png" src="_images/airmap-flow.png" />
+<p><strong>Pre-Requistes:</strong></p>
+<div class="line-block">
+<div class="line">Airmap developer account</div>
+<div class="line">X-API-Key from your account</div>
+<div class="line">GPS data (fake gps included)</div>
+<div class="line">OAuth token</div>
+<div class="line">pip</div>
+<div class="line">getAirmap.py (copy to /home/root/installs directory or similar)</div>
+<div class="line">AirMapSDK-Embedded is pre-installed</div>
+</div>
+<p><strong>Wi-Fi Connectivity</strong></p>
+<div class="line-block">
+<div class="line">ifconfig (check for wlan0 or LTE ethX)</div>
+<div class="line">cd /etc</div>
+<div class="line">sudo wpa_passphrase yourSSID yourPassphrase &gt; wpa-Aero.conf</div>
+<div class="line">sudo wpa_supplicant -i wlan0 -c /etc/wpa-Aero.conf &amp;</div>
+<div class="line">sudo dhclient wlan0</div>
+</div>
+<p><strong>Update AirMapSDK-Embedded</strong></p>
+<div class="line-block">
+<div class="line">cd /etc/airmap</div>
+<div class="line">python getAirmap.py airmap AirMapSDK-Embedded</div>
+<div class="line">unzip AirMapSDK-Embedded-master.zip</div>
+<div class="line">cd AirMapSDK-Embedded-master</div>
+</div>
+<p><strong>User Example</strong></p>
+<div class="line-block">
+<div class="line">cd /etc/airmap/AirMapSDK-Embedded</div>
+<div class="line">python userapp.py</div>
+</div>
+<p><strong>API Example</strong></p>
+<div class="line-block">
+<div class="line">(connect) airmap.connect.set_XAPIKey(xapikey) - Set your X-API-Key from your Airmap account</div>
+<div class="line">(connect) airmap.connect.get_boardID() - Retrieve CID information</div>
+<div class="line">(connect) airmap.connect.connect() - Check internet connection and endpoint status Returns: True if ready</div>
+<div class="line">(statusAPI) airmap.statusAPI.get_status(lat,lon,Weather.on) - Given position retreive airspace data</div>
+<div class="line">(statusAPI) Parse status information including weather, advisories, and maximum flight bounds (see statusAPI documentation)</div>
+<div class="line">(user) Process required notifications if needed</div>
+<div class="line">(connect) airmap.connect.get_SecureToken() - get security token</div>
+<div class="line">(flightAPI) airmap.flightAPI.create_FlightPoint (flight time,lat,lon,publicflight?,sendnotifications?) - Setup the flight and flight time Returns flightID</div>
+<div class="line">(flightAPI) airmap.flightAPI.get_PilotID() - Returns pilotID for this account</div>
+<div class="line">(flightAPI) airmap.flightAPI.end_Flight(flightID) - End the flight specified by flight ID</div>
+<div class="line">(flightAPI) airmap.flightAPI.delete_Flight(flightID) - Delete flight described by flightID</div>
+<div class="line">(flightAPI) airmap.flightAPI.get_FlightList(pilotID) - Get all flights for pilotID</div>
+<div class="line">(flightAPI) airmap.flightAPI.cmd_KillFlights(pilotID) - Delete all flights under specified pilotID</div>
+</div>
+<p>Documentation can be found at <a class="reference external" href="https://developer.airmap.io">https://developer.airmap.io</a></p>
+<p>Source code can be found at <a class="reference external" href="https://github.com/">https://github.com/</a>...</p>
+<p>Airmap is a trademark of Airmap, Inc.</p>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="airmap.html">airmap Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="airmap.html#module-airmap.airdefs"><tt class="docutils literal"><span class="pre">airdefs</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airmap.html#module-airmap.connect"><tt class="docutils literal"><span class="pre">connect</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airmap.html#module-airmap.statusAPI"><tt class="docutils literal"><span class="pre">statusAPI</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airmap.html#module-airmap.flightAPI"><tt class="docutils literal"><span class="pre">flightAPI</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airmap.html#module-airmap.drone"><tt class="docutils literal"><span class="pre">drone</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airmap.html#module-airmap.log"><tt class="docutils literal"><span class="pre">log</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airmap.html#module-airmap.telemetryAPI"><tt class="docutils literal"><span class="pre">telemetryAPI</span></tt> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="airmap.html#module-airmap.alertsAPI"><tt class="docutils literal"><span class="pre">alertsAPI</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to AirMap&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="airmap.html"
+                        title="next chapter">airmap Package</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="airmap.html" title="airmap Package"
+             >next</a> |</li>
+        <li><a href="#">Airmap V2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Ricardo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
