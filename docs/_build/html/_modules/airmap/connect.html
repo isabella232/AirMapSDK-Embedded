@@ -153,9 +153,10 @@
 <span class="sd">    		:returns: CID otherwise False</span>
 <span class="sd">    		&quot;&quot;&quot;</span>
 		<span class="k">try</span><span class="p">:</span>
-			<span class="n">Globals</span><span class="o">.</span><span class="n">thisCID</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s">&#39;./airprint&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-			<span class="k">print</span> <span class="s">&quot;boardID|&quot;</span> <span class="o">+</span> <span class="n">Globals</span><span class="o">.</span><span class="n">thisCID</span>
-			<span class="k">return</span> <span class="n">Globals</span><span class="o">.</span><span class="n">thisCID</span>
+			<span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s">&#39;chmod a+x ./airprint&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>			
+			<span class="n">Globals</span><span class="o">.</span><span class="n">thisBID</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="s">&#39;./airprint&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+			<span class="k">print</span> <span class="s">&quot;boardID|&quot;</span> <span class="o">+</span> <span class="n">Globals</span><span class="o">.</span><span class="n">thisBID</span>
+			<span class="k">return</span> <span class="n">Globals</span><span class="o">.</span><span class="n">thisBID</span>
 		<span class="k">except</span><span class="p">:</span>
 			<span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
 			<span class="k">return</span> <span class="bp">False</span>

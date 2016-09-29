@@ -60,7 +60,7 @@ class Globals:
 	httpPort = 80
 	timeOut = 18
 	AirConnected = False
-	thisCID = None
+	thisBID = None
 	xapikey = None
 	myToken = None
 	pilot_id = None
