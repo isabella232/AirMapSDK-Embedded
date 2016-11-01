@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package airmap.telemetry;
+
+message Position {
+    // Decimal place requirement: 7 decimal places.
+    double latitude = 1;
+
+    // Decimal place requirement: 7 decimal places.
+    double longitude = 2;
+
+    // Altitude is always in Meters
+    float altitude = 3;
+
+    // Milliseconds since epoc UTC
+    uint64 timestamp = 4;
+}
+
+message Speed {
+    // Ground speed in meters/second.
+    float ground_speed = 1;
+
+    // Heading relative to True North
+    float true_heading = 2;
+}
+
+message Barometer {
+    // Barometric reading, hPa
+    float barometer = 1;
+}

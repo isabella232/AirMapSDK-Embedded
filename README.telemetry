@@ -1,0 +1,14 @@
+WIP: integrate this readme into existing readme before merging to master
+
+These are just some scratch notes on the new UDP telemetry implementation
+
+
+
+build -t airmap_sdk_embedded .
+
+TODO: integrate the following protoc into the Dockerfile
+docker run -it --rm -e -v $PWD:/app -w /app airmap_sdk_embedded protoc -I . ---python_out pyproto telemetry.proto
+
+To test, run receiver and sender simultaneously:
+docker run -it --rm --name udp_receive -v $PWD:/app -w /app airmap_sdk_embedded python udp_telemetry_receive.py
+docker run -it --rm --link udp_receive -v $PWD:/app -w /app airmap_sdk_embedded python udp_telemetry_send.py
