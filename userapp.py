@@ -15,15 +15,30 @@ import gps
 import socket
 import time
 import sys
+import pymavlink.mavutil as mavutil
+import re
+import datetime
+import math
 
 curMode = Startup.Drone.State.connect
-test = True
-lat = None
-lon = None
+flightEnable = False
+logFlight = True
+trigAlt = None
+trigTime = None
 xapikey = {"Content-Type":"application/json; charset=utf-8","X-API-Key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVkZW50aWFsX2lkIjoiY3JlZGVudGlhbHxHTk5nbUxuaTlYM1p3UlRYTU9sMnFmS0o1Z0xLIiwiYXBwbGljYXRpb25faWQiOiJhcHBsaWNhdGlvbnxuOW41QmtZc0JhNkFvM3NBUkpHeXlVYWxZUUVZIiwib3JnYW5pemF0aW9uX2lkIjoiZGV2ZWxvcGVyfDJ6b2JiN3loeGVZNHFrQzNQUngwWkhLTXoyMzgiLCJpYXQiOjE0NzExMjY1NDJ9.v4STUtbJa3uJZFsJLpWZRgUYoyz1X6BxKW8kokerjCg"}
+filename = "/home/root/log-" + str(time.time()) + ".txt"
+
+if logFlight:
+	logbook = open(filename, 'w')
+
+if ( len(sys.argv) < 2):
+	print "Usage: python userapp.py { test | gpsd | auto }"
+	sys.exit(1)
+else:
+	runType = sys.argv[1]
 
 
-if test:
+if sys.argv[1] == "test":
 	lat = '34.013252'
 	lon = '-118.499112'
 	alt = '101.3'
@@ -34,9 +49,15 @@ if test:
 	bogeyid = '37849329'
 	drone_mode = "follow-me"
 	battery_chrg= '11.2'
-	cur_status= "warning"
+	cur_status= "ready"
 	print "GPS test mode enabled..."
-else:
+elif sys.argv[1] == "gpsd":
+	barometer = '28.4'
+	log_perct = '31.2'
+	bogeyid = '37849329'
+	drone_mode = "follow-me"
+	battery_chrg= '11.2'
+	cur_status= "green"
 	try:
     		#Access GPS
 		gpsReady = False
@@ -49,14 +70,45 @@ else:
 
 			# Wait for GPS lock
 			if (gpsd.valid & gps.LATLON_SET) != 0:
-				lat = str(gpsd.fix.latitude)
-				lon = str(gpsd.fix.longitude)
+				lat = gpsd.fix.latitude
+				lon = gpsd.fix.longitude
+				trigAlt = alt = gpsd.fix.altitude
+        			heading = gpsd.fix.track
+       				ground_speed = gpsd.fix.speed
+        			gpstime = gpsd.utc
 				gpsReady = True #breakout
             
 	except socket.error:
     		print "Error: gpsd service does not seem to be running, plug in USB GPS, run fake-gps-data.sh or run set 'test' flag"
     		sys.exit(1)
+else:
+	try:
+		mav = mavutil.mavlink_connection('udpin:' + '127.0.0.1:14550')
+		mav.wait_heartbeat()
+		barometer = '28.4'
+		log_perct = '31.2'
+		bogeyid = '37849329'
+		drone_mode = "follow-me"
+		battery_chrg= '11.2'
+		cur_status= "warning"
+		updatePos = mav.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
+    		if updatePos is not None:
+			print(updatePos)
+			gpsdata = re.split(': |, ', str(updatePos))
+			lat = (float(gpsdata[3])/10000000)
+			lon = (float(gpsdata[5])/10000000)
+			trigAlt = alt = (float(gpsdata[7])/1000)
+			heading = (float(gpsdata[17][:-1])/100)
+			ground_speed = math.sqrt( ((float(gpsdata[11])/100) * (float(gpsdata[11])/100)) + ((float(gpsdata[13])/100) * (float(gpsdata[13])/100)) )
 
+	except socket.error:
+    		print "Error: Mavlink service not found."
+    		sys.exit(1)
+print lat
+print lon
+print trigAlt
+
+trigTime = datetime.datetime.now()
 airconnect = Connect()
 airstatus = Status()
 airflight = Flight()
@@ -69,7 +121,7 @@ airconnect.get_boardID()
 Ret = airconnect.connect()
 
 if Ret:
-	if airstatus.get_status(lat,lon,Weather.on):
+	if airstatus.get_status(str(lat),str(lon),Weather.on):
 		flightStatus = airstatus.get_StatusColor()
 		print flightStatus
 		maxDistance = airstatus.get_MaxDistance()
@@ -154,16 +206,72 @@ if Ret:
 
 		airconnect.get_SecureToken()
 
-		flightID = airflight.create_FlightPoint (2,lat,lon,Public.on,Notify.on)
+		flightID = airflight.create_FlightPoint (2,str(lat),str(lon),Public.on,Notify.on)
 		myPilotID = airflight.get_PilotID()
 
 		airflight.end_Flight(flightID)
 		#airflight.delete_Flight(flightID)
-
+		
+		endTime = trigTime + datetime.timedelta(0,240)	
 		print "Telemetry..."
-		response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
-		print response
+		while ( ((trigAlt <= (alt+1)) or (flightEnable == False)) or (datetime.datetime.now() < endTime) ):
+			if sys.argv[1] == "test":
+				response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
+				print response
+			elif sys.argv[1] == "gpsd":
+				gpsd.next()
+        
+				alt = gpsd.fix.altitude
+        			lat = gpsd.fix.latitude
+        			lon = gpsd.fix.longitude
+        			heading = gpsd.fix.track
+       				ground_speed = gpsd.fix.speed
+        			gpstime = gpsd.utc
 
+				print lat
+				print lon
+        			print heading
+       				print ground_speed
+        			print gpstime
+
+				if math.isnan(gpsd.fix.latitude) or math.isnan(gpsd.fix.longitude) or math.isnan(gpsd.fix.track) or math.isnan(gpsd.fix.speed) or math.isnan(gpsd.fix.altitude) or gpsd.fix.latitude == 0.0:
+                			print "Waiting for GPS lock..."
+                			time.sleep(2)
+                			continue
+				response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
+				print response
+			else:
+				updatePos = mav.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
+    				if updatePos is not None:
+					#print(updatePos)
+					gpsdata = re.split(': |, ', str(updatePos))
+					#print (str(float(gpsdata[3])/10000000))
+					#print (str(float(gpsdata[5])/10000000))
+					#print (str(float(gpsdata[7])/1000))
+					lat = (float(gpsdata[3])/10000000)
+					lon = (float(gpsdata[5])/10000000)
+					alt = (float(gpsdata[7])/1000)
+					heading = (float(gpsdata[17][:-1])/100)
+					ground_speed = math.sqrt( ((float(gpsdata[11])/100) * (float(gpsdata[11])/100)) + ((float(gpsdata[13])/100) * (float(gpsdata[13])/100)) )
+
+					if math.isnan(lat) or math.isnan(lon) or math.isnan(alt) or lat == 0.0:
+                				print "Waiting for GPS lock..."
+                				time.sleep(2)
+                				continue
+
+					response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
+					print response
+			if logFlight:	
+				logbook.write ("Mission:\tlat: " + str(lat) + "\tlon: " + str(lon) + "\talt: " + str(alt) + "\n")
+
+
+			if (alt > (trigAlt+3)):
+				flightEnable = True
+
+			time.sleep(1)
+		
+		if logFlight:	
+			logbook.close()
 		airflight.get_FlightList(myPilotID)
 		airflight.cmd_KillFlights(myPilotID)
 
