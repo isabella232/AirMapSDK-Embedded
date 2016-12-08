@@ -104,9 +104,10 @@ class Connect:
     		:returns: CID otherwise False
     		"""
 		try:
-			Globals.thisCID = subprocess.check_output('./airprint', shell=True)
-			print "boardID|" + Globals.thisCID
-			return Globals.thisCID
+			subprocess.check_output('chmod a+x ./airprint', shell=True)			
+			Globals.thisBID = subprocess.check_output('./airprint', shell=True)
+			print "boardID|" + Globals.thisBID
+			return Globals.thisBID
 		except:
 			traceback.print_exc()
 			return False
