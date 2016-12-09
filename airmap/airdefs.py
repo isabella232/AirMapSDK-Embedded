@@ -66,6 +66,7 @@ class Globals:
 	pilot_id = None
 	myFlightID = None
 	pilotIDValid = False
+	airmapVersion = 1.6 
 
 	def strPrint(self, data):
 		"""Information send to console
@@ -83,6 +84,14 @@ class Globals:
         	"""
 		if __name__ == '__main__':
 			print str(data) + "\r"
+
+	def getVersion(self):
+		"""Get Embedded SDK Version
+
+		:param: Note
+		:return: version
+		"""
+		return (self.airmapVersion)
 
 class Properties():
 	"""Name to Value Keypairs
