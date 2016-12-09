@@ -23,6 +23,7 @@ import math
 curMode = Startup.Drone.State.connect
 flightEnable = False
 logFlight = True
+flightTimeMin = 2
 trigAlt = None
 trigTime = None
 xapikey = {"Content-Type":"application/json; charset=utf-8","X-API-Key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVkZW50aWFsX2lkIjoiY3JlZGVudGlhbHxHTk5nbUxuaTlYM1p3UlRYTU9sMnFmS0o1Z0xLIiwiYXBwbGljYXRpb25faWQiOiJhcHBsaWNhdGlvbnxuOW41QmtZc0JhNkFvM3NBUkpHeXlVYWxZUUVZIiwib3JnYW5pemF0aW9uX2lkIjoiZGV2ZWxvcGVyfDJ6b2JiN3loeGVZNHFrQzNQUngwWkhLTXoyMzgiLCJpYXQiOjE0NzExMjY1NDJ9.v4STUtbJa3uJZFsJLpWZRgUYoyz1X6BxKW8kokerjCg"}
@@ -83,6 +84,7 @@ elif sys.argv[1] == "gpsd":
     		sys.exit(1)
 else:
 	try:
+		print "Waiting for GPS lock..."
 		mav = mavutil.mavlink_connection('udpin:' + '127.0.0.1:14550')
 		mav.wait_heartbeat()
 		barometer = '28.4'
@@ -108,7 +110,7 @@ print lat
 print lon
 print trigAlt
 
-trigTime = datetime.datetime.now()
+trigTime = datetime.datetime.utcnow()
 airconnect = Connect()
 airstatus = Status()
 airflight = Flight()
@@ -206,15 +208,19 @@ if Ret:
 
 		airconnect.get_SecureToken()
 
-		flightID = airflight.create_FlightPoint (2,str(lat),str(lon),Public.on,Notify.on)
+		lat = '35.874637' 
+		lon = '-78.720884'
+
+		#flightID = airflight.create_FlightPoint (flightTimeMin,str(lat),str(lon),Public.on,Notify.on)
+		flightID = airflight.create_FlightPoint (flightTimeMin,lat,lon,Public.on,Notify.on)
 		myPilotID = airflight.get_PilotID()
 
 		airflight.end_Flight(flightID)
 		#airflight.delete_Flight(flightID)
 		
-		endTime = trigTime + datetime.timedelta(0,240)	
+		endTime = trigTime + datetime.timedelta(0,flightTimeMin*60)	
 		print "Telemetry..."
-		while ( ((trigAlt <= (alt+1)) or (flightEnable == False)) or (datetime.datetime.now() < endTime) ):
+		while ( ((trigAlt <= (alt+1)) or (flightEnable == False)) and (datetime.datetime.utcnow() < endTime) ):
 			if sys.argv[1] == "test":
 				response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
 				print response
