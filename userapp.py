@@ -208,16 +208,9 @@ if Ret:
 
 		airconnect.get_SecureToken()
 
-		lat = '35.874637' 
-		lon = '-78.720884'
-
-		#flightID = airflight.create_FlightPoint (flightTimeMin,str(lat),str(lon),Public.on,Notify.on)
-		flightID = airflight.create_FlightPoint (flightTimeMin,lat,lon,Public.on,Notify.on)
+		flightID = airflight.create_FlightPoint (flightTimeMin,str(lat),str(lon),Public.on,Notify.on)
 		myPilotID = airflight.get_PilotID()
 
-		airflight.end_Flight(flightID)
-		#airflight.delete_Flight(flightID)
-		
 		endTime = trigTime + datetime.timedelta(0,flightTimeMin*60)	
 		print "Telemetry..."
 		while ( ((trigAlt <= (alt+1)) or (flightEnable == False)) and (datetime.datetime.utcnow() < endTime) ):
@@ -278,6 +271,8 @@ if Ret:
 		
 		if logFlight:	
 			logbook.close()
+
+		airflight.end_Flight(flightID)
 		airflight.get_FlightList(myPilotID)
 		airflight.cmd_KillFlights(myPilotID)
 

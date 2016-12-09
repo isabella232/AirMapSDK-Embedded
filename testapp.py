@@ -24,8 +24,10 @@ xapikey = {"Content-Type":"application/json; charset=utf-8","X-API-Key":"eyJhbGc
 
 
 if test:
-	lat = '34.013252'
-	lon = '-118.499112'
+	#lat = '34.013252'
+	#lon = '-118.499112'
+	lat = '35.874777'
+	lon = '-78.720197'
 	alt = '101.3'
 	ground_speed = '10.8'
 	heading = '84.6'
@@ -157,7 +159,7 @@ if Ret:
 		flightID = airflight.create_FlightPoint (2,lat,lon,Public.on,Notify.on)
 		myPilotID = airflight.get_PilotID()
 
-		airflight.end_Flight(flightID)
+		#airflight.end_Flight(flightID)
 		#airflight.delete_Flight(flightID)
 
 		print "Telemetry..."
