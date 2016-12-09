@@ -1,0 +1,12 @@
+Release Version 1.6:
+Added getver.py which allow user to see SDK version
+Updated airdefs to include version number
+
+Candidate 1.6 Beta
+Hook up to Mavlink router
+Updated telemetry API
+Connect to gpsd service
+Added data to fake gps
+Updated time to use UTC
+Added auto flight actions based on altitude
+
