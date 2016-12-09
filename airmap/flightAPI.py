@@ -79,10 +79,10 @@ class Flight:
 			return False
 
 	def create_FlightPoint(self, time, lat, lon, public, notify):
-		startTime = datetime.datetime.now()
+		startTime = datetime.datetime.utcnow()
 		endTime = startTime + datetime.timedelta(0,(time*60))
-		startTime = startTime.isoformat() + "-07:00"
-		endTime = endTime.isoformat() + "-07:00"
+		startTime = startTime.isoformat() + "-00:00"
+		endTime = endTime.isoformat() + "-00:00"
 		try:
 			connectFlight = httplib.HTTPSConnection(Globals.httpsAddr, Globals.httpsPort, timeout=Globals.timeOut)
 			headers = Globals.xapikey
