@@ -35,7 +35,7 @@ class Telemetry:
 		headers = Globals.xapikey
 		#print "..............................................."
 		try:
-        		connectTelemetry.request('PUT', '/livemap/telemetry/{}'.format(flightID), json.dumps({"lat":float(lat),"lon":float(lon),"alt":float(alt),"timestamp":"{}".format(datetime.datetime.now()),"gs_ms":float(ground_speed),"true":float(heading),"baro":float(barometer),"status":"{}".format(status),"battery":float(battery),"drone":"{}".format(drone),"seq":int(seq),"log":float(logused)}), headers)
+        		connectTelemetry.request('PUT', '/livemap/telemetry/{}'.format(flightID), json.dumps({"lat":float(lat),"lon":float(lon),"alt":float(alt),"timestamp":"{}".format(datetime.datetime.utcnow()),"gs_ms":float(ground_speed),"true":float(heading),"baro":float(barometer),"status":"{}".format(status),"battery":float(battery),"drone":"{}".format(drone),"seq":int(seq),"log":float(logused)}), headers)
         		result = connectTelemetry.getresponse().read()
 			#print result			
 			parsed_json = json.loads(result)
@@ -50,7 +50,7 @@ class Telemetry:
 		headers = Globals.xapikey
 		#print "..............................................."
 		try:
-        		connectTelemetry.request('POST', '/livemap/telemetry/{}'.format(flightID), json.dumps({"lat":float(lat),"lon":float(lon),"alt":float(alt),"timestamp":"{}".format(datetime.datetime.now()),"gs_ms":float(ground_speed),"true":float(heading),"baro":float(barometer),"status":"{}".format(status),"battery":float(battery),"drone":"{}".format(drone),"seq":int(seq),"log":float(logused)}), headers)
+        		connectTelemetry.request('POST', '/livemap/telemetry/{}'.format(flightID), json.dumps({"lat":float(lat),"lon":float(lon),"alt":float(alt),"timestamp":"{}".format(datetime.datetime.utcnow()),"gs_ms":float(ground_speed),"true":float(heading),"baro":float(barometer),"status":"{}".format(status),"battery":float(battery),"drone":"{}".format(drone),"seq":int(seq),"log":float(logused)}), headers)
         		result = connectTelemetry.getresponse().read()
 			#print result			
 			parsed_json = json.loads(result)
