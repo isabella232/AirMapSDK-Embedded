@@ -132,7 +132,7 @@ def on_message(client, userdata, msg):
 client.on_connect = on_connect
 client.on_message = on_message
 client.tls_insecure_set(True)
-client.tls_set("mosquitto.org.crt",cert_reqs=ssl.CERT_NONE,tls_version=ssl.PROTOCOL_TLSv1_2)
+client.tls_set("airmap.io.crt",cert_reqs=ssl.CERT_NONE,tls_version=ssl.PROTOCOL_TLSv1_2)
 client.tls_insecure_set(True)
 
 airconnect = Connect()
