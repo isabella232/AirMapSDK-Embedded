@@ -141,10 +141,9 @@ class Connect:
 			headers = Globals.xapikey
 			connectAuth0.request('POST', '/delegation', json.dumps({"refresh_token":"ezKrfuSeSD8DA7w2Dq7gqsL10sYuKdVEXA6BIIJLEAJQh","grant_type":"urn:ietf:params:oauth:grant-type:jwt-bearer","client_id":"2iV1XSfdLJNOfZiTZ9JGdrNHtcNzYstt","api_type":"app"}), headers)
         		result = connectAuth0.getresponse().read()
-        		#print(result)
 			parsed_json = json.loads(result)
 			Globals.myToken = parsed_json['id_token']
-			#print Globals.myToken
+			return  Globals.myToken
 		except:
         		print "OAuth2 Error..."
 			traceback.print_exc()

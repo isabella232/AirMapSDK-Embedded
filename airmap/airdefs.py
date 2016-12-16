@@ -66,7 +66,7 @@ class Globals:
 	pilot_id = None
 	myFlightID = None
 	pilotIDValid = False
-	airmapVersion = 1.6 
+	airmapVersion = 1.8 
 
 	def strPrint(self, data):
 		"""Information send to console
