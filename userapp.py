@@ -19,12 +19,15 @@ import pymavlink.mavutil as mavutil
 import re
 import datetime
 import math
+import paho.mqtt.client as mqtt
+import ssl
 
 curMode = Startup.Drone.State.connect
 flightEnable = False
 logFlight = True
-flightTimeMin = 2
-trigAlt = None
+flightID = None 
+flightTimeMin = 15
+trigAlt = 0 
 trigTime = None
 xapikey = {"Content-Type":"application/json; charset=utf-8","X-API-Key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVkZW50aWFsX2lkIjoiY3JlZGVudGlhbHxHTk5nbUxuaTlYM1p3UlRYTU9sMnFmS0o1Z0xLIiwiYXBwbGljYXRpb25faWQiOiJhcHBsaWNhdGlvbnxuOW41QmtZc0JhNkFvM3NBUkpHeXlVYWxZUUVZIiwib3JnYW5pemF0aW9uX2lkIjoiZGV2ZWxvcGVyfDJ6b2JiN3loeGVZNHFrQzNQUngwWkhLTXoyMzgiLCJpYXQiOjE0NzExMjY1NDJ9.v4STUtbJa3uJZFsJLpWZRgUYoyz1X6BxKW8kokerjCg"}
 filename = "/home/root/log-" + str(time.time()) + ".txt"
@@ -87,6 +90,7 @@ else:
 		print "Waiting for GPS lock..."
 		mav = mavutil.mavlink_connection('udpin:' + '127.0.0.1:14550')
 		mav.wait_heartbeat()
+		print "Got Heartbeat..."
 		barometer = '28.4'
 		log_perct = '31.2'
 		bogeyid = '37849329'
@@ -111,6 +115,26 @@ print lon
 print trigAlt
 
 trigTime = datetime.datetime.utcnow()
+
+client = mqtt.Client("airmap1",clean_session = True)
+
+def on_connect(client, userdata, flags, rc):
+	print ("Alerts Connected with result code "+str(rc))
+	thisSA = "uav/traffic/sa/"+flightID
+	thisAlert = "uav/traffic/alert/"+flightID
+	client.subscribe(str(thisSA),0)
+	client.subscribe(str(thisAlert),0)
+
+def on_message(client, userdata, msg):
+	print "Alert..."
+	print (msg.topic+" " +str(msg.payload))
+
+client.on_connect = on_connect
+client.on_message = on_message
+client.tls_insecure_set(True)
+client.tls_set("mosquitto.org.crt",cert_reqs=ssl.CERT_NONE,tls_version=ssl.PROTOCOL_TLSv1_2)
+client.tls_insecure_set(True)
+
 airconnect = Connect()
 airstatus = Status()
 airflight = Flight()
@@ -206,14 +230,18 @@ if Ret:
 			print "Advisory Complete..."
 
 
-		airconnect.get_SecureToken()
+		goToken = airconnect.get_SecureToken()
 
-		flightID = airflight.create_FlightPoint (flightTimeMin,str(lat),str(lon),Public.on,Notify.on)
+		flightID = airflight.create_FlightPoint (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
 		myPilotID = airflight.get_PilotID()
 
 		endTime = trigTime + datetime.timedelta(0,flightTimeMin*60)	
+
+		client.username_pw_set(flightID, goToken)
+		client.loop_start()
+		client.connect("mqtt-prod.airmap.io", 8883, 60)
 		print "Telemetry..."
-		while ( ((trigAlt <= (alt+1)) or (flightEnable == False)) and (datetime.datetime.utcnow() < endTime) ):
+		while ( ((trigAlt <= (float(alt)+1)) or (flightEnable == False)) and (datetime.datetime.utcnow() < endTime) ):
 			if sys.argv[1] == "test":
 				response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
 				print response
@@ -264,7 +292,7 @@ if Ret:
 				logbook.write ("Mission:\tlat: " + str(lat) + "\tlon: " + str(lon) + "\talt: " + str(alt) + "\n")
 
 
-			if (alt > (trigAlt+3)):
+			if (float(alt) > (trigAlt+3)):
 				flightEnable = True
 
 			time.sleep(1)
