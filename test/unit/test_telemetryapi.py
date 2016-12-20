@@ -91,7 +91,7 @@ def test_start():
 			testFail = 1
 
 		try:
-			flightID = airflight.create_FlightPoint (2,lat,lon,Public.on,Notify.on)
+			flightID = airflight.create_FlightPoint (5,lat,lon,Public.on,Notify.on)
 			if len(flightID) != 35:
 				testFail = 1
 			myPilotID = airflight.get_PilotID()
@@ -147,7 +147,10 @@ def test_start():
 		if Ret == False:
 			testFail = 1
 
-		
+		try:	
+			flightID = airflight.create_FlightPoint (2,lat,lon,Public.on,Notify.on)
+		except:
+			print "flight creation execption..."	
 		flights = airflight.get_FlightList(myPilotID)
 		if flights == "":
 			testFail = 1

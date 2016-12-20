@@ -42,7 +42,7 @@ def test_start():
 
 	if Ret:
 		if airstatus.get_status(lat,lon,Weather.on):
-			if airstatus.get_StatusColor() != thisAdvisory.Color.Colors.yellow:
+			if ( (airstatus.get_StatusColor() != thisAdvisory.Color.Colors.red) or (airstatus.get_StatusColor() != thisAdvisory.Color.Colors.yellow) ):
 				testFail = 1
 			if airstatus.get_MaxDistance() != 0:
 				testFail = 1
@@ -59,7 +59,7 @@ def test_start():
 			except:
 				print "Finished Advisory Print Task..."
 
-			if xIndex != 9:
+			if xIndex <= 3:
 				print "..............................."
 				testFail = 1
 	else:
