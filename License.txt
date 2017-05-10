@@ -9,8 +9,16 @@ LICENSE = "
 AIRMAPSDK-Intel
 –––––––––––––––
 
-Copyright (c) 2014-2016 AirMap, Inc.
+Copyright [2016-2017] [Airmap, Inc.]
 
-By downloading or using the AirMap SDK, You agree to the AirMap Terms of Service (https://www.airmap.com/terms-conditions/) and SDK and License Agreement (https://www.airmap.com/developer-terms-conditions) and acknowledge that such terms govern Your use of and access to the AirMap SDK.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-If You make any Contributions (defined below) to the AirMap SDK, You hereby grant AirMap a royalty-free, worldwide, transferable, sub-licensable, irrevocable and perpetual license to incorporate into AirMap services or the AirMap API or otherwise use and commercially exploit any Contributions. “Contribution” shall mean any work of authorship, including any modifications or additions to the AirMap SDK or derivative works thereof, that is submitted to AirMap by You."
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License."
