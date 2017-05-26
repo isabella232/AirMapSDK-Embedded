@@ -10,7 +10,6 @@ from airmap.connect import Connect
 from airmap.airdefs import Startup, Advisory, Weather, Notify, Public
 from airmap.statusAPI import Status
 from airmap.flightAPI import Flight
-from airmap.telemetryAPI import Telemetry
 import gps
 import socket
 import time
@@ -21,16 +20,27 @@ import datetime
 import math
 import paho.mqtt.client as mqtt
 import ssl
+from airmap.telemetryAPI import Tracker, Position
+import subprocess
+import serial
 
 curMode = Startup.Drone.State.connect
 flightEnable = False
 logFlight = True
 flightID = None 
-flightTimeMin = 15
+flightTimeMin = 145
 trigAlt = 0 
 trigTime = None
-xapikey = {"Content-Type":"application/json; charset=utf-8","X-API-Key":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVkZW50aWFsX2lkIjoiY3JlZGVudGlhbHxHTk5nbUxuaTlYM1p3UlRYTU9sMnFmS0o1Z0xLIiwiYXBwbGljYXRpb25faWQiOiJhcHBsaWNhdGlvbnxuOW41QmtZc0JhNkFvM3NBUkpHeXlVYWxZUUVZIiwib3JnYW5pemF0aW9uX2lkIjoiZGV2ZWxvcGVyfDJ6b2JiN3loeGVZNHFrQzNQUngwWkhLTXoyMzgiLCJpYXQiOjE0NzExMjY1NDJ9.v4STUtbJa3uJZFsJLpWZRgUYoyz1X6BxKW8kokerjCg"}
-filename = "/home/root/log-" + str(time.time()) + ".txt"
+#filename = "/home/root/log-" + str(time.time()) + ".txt"
+fileUser=open("user.txt", "r")
+if fileUser.mode == 'r':
+	xapiKeyBuf = fileUser.readline()
+	xapiKeyBufa = xapiKeyBuf.rstrip('\n')
+	xapikey = {"Content-Type":"application/json; charset=utf-8","X-API-Key":xapiKeyBufa} 	  # update xapikey
+fileUser.close()
+filename = "log-" + str(time.time()) + ".txt"
+paramsname = "params.txt"
+paramsbook = open(paramsname, 'w')
 
 if logFlight:
 	logbook = open(filename, 'w')
@@ -43,8 +53,14 @@ else:
 
 
 if sys.argv[1] == "test":
-	lat = '34.013252'
-	lon = '-118.499112'
+	#lat = '34.0168106'
+	#lat = '35.884830'
+	#lon = '-118.4950975'
+	#lon = '-78.735037'
+	#lat = '35.882680'
+	#lon = '-78.733006'
+	lat = '39.69345079688953'
+	lon = '-119.91422653198242'
 	alt = '101.3'
 	ground_speed = '10.8'
 	heading = '84.6'
@@ -74,6 +90,7 @@ elif sys.argv[1] == "gpsd":
 
 			# Wait for GPS lock
 			if (gpsd.valid & gps.LATLON_SET) != 0:
+				print "Locked..."
 				lat = gpsd.fix.latitude
 				lon = gpsd.fix.longitude
 				trigAlt = alt = gpsd.fix.altitude
@@ -88,7 +105,9 @@ elif sys.argv[1] == "gpsd":
 else:
 	try:
 		print "Waiting for GPS lock..."
-		mav = mavutil.mavlink_connection('udpin:' + '127.0.0.1:14550')
+		#mav = mavutil.mavlink_connection('udpin:' + '127.0.0.1:14550')
+		mav = mavutil.mavlink_connection('COM26', baud=57600)
+		#mav = mavutil.mavlink_connection('COM3', baud=57600)
 		mav.wait_heartbeat()
 		print "Got Heartbeat..."
 		barometer = '28.4'
@@ -97,7 +116,11 @@ else:
 		drone_mode = "follow-me"
 		battery_chrg= '11.2'
 		cur_status= "warning"
+		thisMsg = mav.recv_msg()
+		print thisMsg
+		print "Waiting for position..."
 		updatePos = mav.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
+		print updatePos
     		if updatePos is not None:
 			print(updatePos)
 			gpsdata = re.split(': |, ', str(updatePos))
@@ -116,33 +139,30 @@ print trigAlt
 
 trigTime = datetime.datetime.utcnow()
 
-client = mqtt.Client("airmap1",clean_session = True)
+#client = mqtt.Client("airmap1",clean_session = True)
 
 def on_connect(client, userdata, flags, rc):
 	print ("Alerts Connected with result code "+str(rc))
 	thisSA = "uav/traffic/sa/"+flightID
 	thisAlert = "uav/traffic/alert/"+flightID
-	client.subscribe(str(thisSA),0)
-	client.subscribe(str(thisAlert),0)
+	#client.subscribe(str(thisSA),0)
+	#client.subscribe(str(thisAlert),0)
 
 def on_message(client, userdata, msg):
 	print "Alert..."
 	print (msg.topic+" " +str(msg.payload))
 
-client.on_connect = on_connect
-client.on_message = on_message
-client.tls_insecure_set(True)
-client.tls_set("airmap.io.crt",cert_reqs=ssl.CERT_NONE,tls_version=ssl.PROTOCOL_TLSv1_2)
-client.tls_insecure_set(True)
+#client.on_connect = on_connect
+#client.on_message = on_message
+#client.tls_insecure_set(True)
+#client.tls_set("airmap.io.crt",cert_reqs=ssl.CERT_NONE,tls_version=ssl.PROTOCOL_TLSv1_2)
+#client.tls_insecure_set(True)
 
 airconnect = Connect()
 airstatus = Status()
 airflight = Flight()
-airtelemetry = Telemetry()
 airconnect.set_Timeout(16)
 airconnect.set_XAPIKey(xapikey)
-
-airconnect.get_boardID()
 
 Ret = airconnect.connect()
 
@@ -230,21 +250,65 @@ if Ret:
 			print "Advisory Complete..."
 
 
-		goToken = airconnect.get_SecureToken()
+		goToken = airconnect.get_SecureAuth()
+		try:	
+			#flightID = airflight.create_FlightPoint (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
+			flightID = airflight.create_FlightPolygon (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
+			myPilotID = airflight.get_PilotID()
+			paramsbook.write (str(xapikey) + "\n")
+			paramsbook.write (myPilotID + "\n")
 
-		flightID = airflight.create_FlightPoint (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
-		myPilotID = airflight.get_PilotID()
+		except:
+			print "Recovering..."
+			recover_pilotid = airflight.recover_Pilot()
+			airflight.get_FlightList(recover_pilotid)
+			airflight.cmd_KillFlights(recover_pilotid)
+			#flightID = airflight.create_FlightPoint (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
+			flightID = airflight.create_FlightPolygon (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
+			myPilotID = airflight.get_PilotID()
+			paramsbook.write (str(xapikey) + "\n")
+			paramsbook.write (myPilotID + "\n")
+			
 
-		endTime = trigTime + datetime.timedelta(0,flightTimeMin*60)	
+		myKey = airflight.start_comm(flightID)
 
-		client.username_pw_set(flightID, goToken)
-		client.loop_start()
-		client.connect("mqtt-prod.airmap.io", 8883, 60)
+		endTime = trigTime + datetime.timedelta(0,flightTimeMin*60)
+
+		serverflightID = flightID
+		servermyKey = myKey
+
+		#track = Tracker(str(serverflightID), servermyKey, "api-udp-telemetry.airmap.com", "16060")
+		track = Tracker(str(serverflightID), servermyKey)
+		#track = Tracker(str(serverflightID), servermyKey, "ec2-54-245-37-180.us-west-2.compute.amazonaws.com", "16060")
+		
+		epochTime = time.time()
+		print epochTime
+		track.add_message(Position(timestamp=epochTime, latitude=float(lat), longitude=float(lon), altitude_agl=float(alt), horizontal_accuracy=6))
+		track.send()
+
+		paramsbook.write ("ID: " + flightID + "\npassword: " + goToken + "\n")
+		paramsbook.close()
+
+		logbook.write ("flightid:" + str(flightID) + "\n")
+
 		print "Telemetry..."
 		while ( ((trigAlt <= (float(alt)+1)) or (flightEnable == False)) and (datetime.datetime.utcnow() < endTime) ):
+
 			if sys.argv[1] == "test":
-				response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
+				epochTime = time.time()
+				print epochTime
+				latf = float(lat)
+				latf += .001001
+				lonf = float(lon)
+				lonf += .001001
+				track.add_message(Position(timestamp=epochTime, latitude=latf, longitude=lonf, altitude_agl=float(alt), horizontal_accuracy=4))
+				track.send()
+				response = "ping"	
 				print response
+				lat = str(latf)
+				lon = str(lonf)
+				print lat
+				print lon
 			elif sys.argv[1] == "gpsd":
 				gpsd.next()
         
@@ -255,26 +319,27 @@ if Ret:
        				ground_speed = gpsd.fix.speed
         			gpstime = gpsd.utc
 
-				print lat
-				print lon
-        			print heading
-       				print ground_speed
-        			print gpstime
+				#print lat
+				#print lon
+        			#print heading
+       				#print ground_speed
+        			#print gpstime
 
 				if math.isnan(gpsd.fix.latitude) or math.isnan(gpsd.fix.longitude) or math.isnan(gpsd.fix.track) or math.isnan(gpsd.fix.speed) or math.isnan(gpsd.fix.altitude) or gpsd.fix.latitude == 0.0:
                 			print "Waiting for GPS lock..."
-                			time.sleep(2)
+                			time.sleep(.5)
                 			continue
-				response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
+				epochTime = time.time()
+				track.add_message(Position(timestamp=epochTime, latitude=lat, longitude=lon, altitude_agl=alt, horizontal_accuracy=4))
+				track.send()
+				response = "ping 2"	
 				print response
+			
+
 			else:
 				updatePos = mav.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
     				if updatePos is not None:
-					#print(updatePos)
 					gpsdata = re.split(': |, ', str(updatePos))
-					#print (str(float(gpsdata[3])/10000000))
-					#print (str(float(gpsdata[5])/10000000))
-					#print (str(float(gpsdata[7])/1000))
 					lat = (float(gpsdata[3])/10000000)
 					lon = (float(gpsdata[5])/10000000)
 					alt = (float(gpsdata[7])/1000)
@@ -286,11 +351,17 @@ if Ret:
                 				time.sleep(2)
                 				continue
 
-					response = airtelemetry.post_Telemetry(flightID,lat,lon,alt,ground_speed,heading,barometer,cur_status,battery_chrg,drone_mode,bogeyid,log_perct)
+					epochTime = time.time()
+					track.add_message(Position(timestamp=epochTime, latitude=lat, longitude=lon, altitude_agl=alt, horizontal_accuracy=4))
+					track.send()
+					response = "ping 2"	
 					print response
-			if logFlight:	
-				logbook.write ("Mission:\tlat: " + str(lat) + "\tlon: " + str(lon) + "\talt: " + str(alt) + "\n")
 
+					#not needed
+					#print response
+			if logFlight:	
+				logbook.write ("Mission:\tlat:" + str(lat) + "\tlon:" + str(lon) + "\talt:" + str(alt) + "\tdatetime:" + str(epochTime) + "\ttrack:" + str(heading) + "\n")
+			
 
 			if (float(alt) > (trigAlt+3)):
 				flightEnable = True
@@ -300,6 +371,7 @@ if Ret:
 		if logFlight:	
 			logbook.close()
 
+		airflight.end_comm(flightID)
 		airflight.end_Flight(flightID)
 		airflight.get_FlightList(myPilotID)
 		airflight.cmd_KillFlights(myPilotID)

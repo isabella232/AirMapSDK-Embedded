@@ -21,6 +21,9 @@ import os
 import subprocess
 import traceback
 
+#debugname = "debugconnect.txt"
+#debugbook = open(debugname, 'w')
+
 class Connect:
 	
 	os = __import__('os')
@@ -148,3 +151,37 @@ class Connect:
         		print "OAuth2 Error..."
 			traceback.print_exc()
         		return False
+
+	def get_SecureAuth(self):
+		"""Retrieve Auth0 token
+
+    		:param: None
+    		:returns: Token if successful otherwise False
+
+		:todo: Remove hardcoded token and add token from https endpoint based on CID
+    		"""
+
+		fileLogin=open("user.txt", "r")
+		if fileLogin.mode == 'r':
+			fileLogin.readline() # 1st line is xapikey
+			thisUser = fileLogin.readline() # read user
+			thisUser = thisUser.rstrip('\n')
+			thisPassword = fileLogin.readline() # read password
+			thisPassword = thisPassword.rstrip('\n')
+			thisClientID = fileLogin.readline() # read client
+			thisClientID = thisClientID.rstrip('\n')
+		fileLogin.close()
+
+		try:
+			connectAuth0 = httplib.HTTPSConnection(Globals.keyAddr, Globals.httpsPort, timeout=Globals.timeOut)
+			headers = Globals.xapikey
+			connectAuth0.request('POST', '/oauth/ro', json.dumps({"grant_type":"password","client_id":"{}".format(thisClientID),"connection":"Username-Password-Authentication","username":"{}".format(thisUser),"password":"{}".format(thisPassword),"scope":"openid offline_access","device":"Aero"}), headers)
+        		result = connectAuth0.getresponse().read()
+			parsed_json = json.loads(result)
+			Globals.myToken = parsed_json['id_token']
+			return  Globals.myToken
+		except:
+        		print "OAuth2 Error..."
+			traceback.print_exc()
+        		return False
+
