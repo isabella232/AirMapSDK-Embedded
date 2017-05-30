@@ -23,6 +23,8 @@ import ssl
 from airmap.telemetryAPI import Tracker, Position
 import subprocess
 import serial
+import json
+import yaml
 
 curMode = Startup.Drone.State.connect
 flightEnable = False
@@ -31,6 +33,9 @@ flightID = None
 flightTimeMin = 145
 trigAlt = 0 
 trigTime = None
+enableBounds = 1
+boundsListLat = {}
+boundsListLon = {}
 #filename = "/home/root/log-" + str(time.time()) + ".txt"
 fileUser=open("user.txt", "r")
 if fileUser.mode == 'r':
@@ -57,10 +62,10 @@ if sys.argv[1] == "test":
 	#lat = '35.884830'
 	#lon = '-118.4950975'
 	#lon = '-78.735037'
-	#lat = '35.882680'
-	#lon = '-78.733006'
-	lat = '39.69345079688953'
-	lon = '-119.91422653198242'
+	lat = '35.882680'
+	lon = '-78.733006'
+	#lat = '39.69345079688953'
+	#lon = '-119.91422653198242'
 	alt = '101.3'
 	ground_speed = '10.8'
 	heading = '84.6'
@@ -106,8 +111,8 @@ else:
 	try:
 		print "Waiting for GPS lock..."
 		#mav = mavutil.mavlink_connection('udpin:' + '127.0.0.1:14550')
-		mav = mavutil.mavlink_connection('COM26', baud=57600)
-		#mav = mavutil.mavlink_connection('COM3', baud=57600)
+		#mav = mavutil.mavlink_connection('COM26', baud=57600)
+		mav = mavutil.mavlink_connection('COM53', baud=115200)
 		mav.wait_heartbeat()
 		print "Got Heartbeat..."
 		barometer = '28.4'
@@ -116,11 +121,36 @@ else:
 		drone_mode = "follow-me"
 		battery_chrg= '11.2'
 		cur_status= "warning"
-		thisMsg = mav.recv_msg()
-		print thisMsg
+		if (enableBounds):
+			updatePos = mav.recv_match(type='MISSION_COUNT', blocking=True)
+			updatePos = str(updatePos)[14:]
+			updatePos = yaml.load(updatePos)
+			thisCount = updatePos["count"]
+			print thisCount
+			thisSeq = 0
+			while (enableBounds):
+				updatePos = mav.recv_match(type='MISSION_ITEM', blocking=True)
+				updatePos = str(updatePos)[13:]
+				updatePos = yaml.load(updatePos)
+				thisSeq = updatePos["seq"]
+				thislat = updatePos["x"]
+				thislon = updatePos["y"]
+				boundsListLat[thisSeq] = thislat 
+				boundsListLon[thisSeq] = thislon
+				if (thisSeq >= (thisCount-1)):
+					break
+
+			moveBounds = "[["
+			initCount = 0
+			for bndItem in boundsListLat:
+				if initCount <= 0:
+					moveHome ="[" + str(boundsListLat[bndItem]) + "," + str(boundsListLon[bndItem]) + "]"
+				initCount += 1
+				moveBounds += "[" + str(boundsListLat[bndItem]) + "," + str(boundsListLon[bndItem]) + "],"
+			moveBounds += moveHome + "]]"
+
 		print "Waiting for position..."
 		updatePos = mav.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
-		print updatePos
     		if updatePos is not None:
 			print(updatePos)
 			gpsdata = re.split(': |, ', str(updatePos))
@@ -252,8 +282,10 @@ if Ret:
 
 		goToken = airconnect.get_SecureAuth()
 		try:	
-			#flightID = airflight.create_FlightPoint (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
-			flightID = airflight.create_FlightPolygon (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
+			if (enableBounds):
+				flightID = airflight.create_FlightPolygon (flightTimeMin+1,str(lat),str(lon),moveBounds,Public.on,Notify.on)
+			else:
+				flightID = airflight.create_FlightPoint (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
 			myPilotID = airflight.get_PilotID()
 			paramsbook.write (str(xapikey) + "\n")
 			paramsbook.write (myPilotID + "\n")
@@ -263,8 +295,10 @@ if Ret:
 			recover_pilotid = airflight.recover_Pilot()
 			airflight.get_FlightList(recover_pilotid)
 			airflight.cmd_KillFlights(recover_pilotid)
-			#flightID = airflight.create_FlightPoint (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
-			flightID = airflight.create_FlightPolygon (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
+			if (enableBounds):
+				flightID = airflight.create_FlightPolygon (flightTimeMin+1,str(lat),str(lon),moveBounds,Public.on,Notify.on)
+			else:
+				flightID = airflight.create_FlightPoint (flightTimeMin+1,str(lat),str(lon),Public.on,Notify.on)
 			myPilotID = airflight.get_PilotID()
 			paramsbook.write (str(xapikey) + "\n")
 			paramsbook.write (myPilotID + "\n")
@@ -277,9 +311,7 @@ if Ret:
 		serverflightID = flightID
 		servermyKey = myKey
 
-		#track = Tracker(str(serverflightID), servermyKey, "api-udp-telemetry.airmap.com", "16060")
 		track = Tracker(str(serverflightID), servermyKey)
-		#track = Tracker(str(serverflightID), servermyKey, "ec2-54-245-37-180.us-west-2.compute.amazonaws.com", "16060")
 		
 		epochTime = time.time()
 		print epochTime

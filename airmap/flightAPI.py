@@ -108,18 +108,18 @@ class Flight:
 
 		return Globals.myFlightID
 
-	def create_FlightPolygon(self, time, lat, lon, public, notify):
+	def create_FlightPolygon(self, time, lat, lon,thisBounds, public, notify):
 		startTime = datetime.datetime.utcnow()
 		endTime = startTime + datetime.timedelta(0,(time*60))
 		startTime = startTime.isoformat() + "-00:00"
 		endTime = endTime.isoformat() + "-00:00"
-		print startTime
-		print endTime
+		thisBounds = json.loads(thisBounds)
+
 		try:
 			connectFlight = httplib.HTTPSConnection(Globals.httpsAddr, Globals.httpsPort, timeout=Globals.timeOut)
 			headers = Globals.xapikey
 			headers['Authorization'] = "Bearer {}".format(Globals.myToken)
-			connectFlight.request('POST', '/flight/v2/polygon', json.dumps({"latitude":float(lat),"longitude":float(lon),"max_altitude":100,"start_time":"{}".format(startTime),"end_time":"" + endTime + "","public":bool(public),"notify":bool(notify),"geometry":{"type":"Polygon","coordinates":[[[-119.91422653198242,39.69345079688953],[-119.87028121948241,39.69318661894411],[-119.84676361083986,39.736234274337846],[-119.91336822509766,39.736234274337846],[-119.91422653198242,39.69345079688953]]]}}), headers)
+			connectFlight.request('POST', '/flight/v2/polygon', json.dumps({"latitude":float(lat),"longitude":float(lon),"max_altitude":100,"start_time":"{}".format(startTime),"end_time":"" + endTime + "","public":bool(public),"notify":bool(notify),"geometry":{"type":"Polygon","coordinates": thisBounds}}), headers)
         		result = connectFlight.getresponse().read()
         		#Globals.strPrint(self.thisGlobals,result)
 			try:
