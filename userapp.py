@@ -75,6 +75,7 @@ if sys.argv[1] == "test":
 	drone_mode = "follow-me"
 	battery_chrg= '11.2'
 	cur_status= "ready"
+	moveBounds = "[[[35.8848876953,-78.7346343994],[35.8846588135,-78.7337875366],[35.8838615417,-78.7331924438],[35.8838806152,-78.7339782715],[35.8843040466,-78.7344818115],[35.8848876953,-78.7346343994]]]"
 	print "GPS test mode enabled..."
 elif sys.argv[1] == "gpsd":
 	barometer = '28.4'
